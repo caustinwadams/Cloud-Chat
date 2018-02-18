@@ -17,10 +17,13 @@ class LogInViewController: UIViewController {
     @IBOutlet var emailTextfield: UITextField!
     @IBOutlet var passwordTextfield: UITextField!
     
+    @IBOutlet weak var loginButton: UIButton!
     
     //MARK: - On Load Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loginButton.layer.cornerRadius = loginButton.frame.height / 2
         
     }
 

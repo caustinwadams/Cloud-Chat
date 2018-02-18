@@ -22,7 +22,7 @@
 		432A806C2038E7BA00955623 /* SentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 432A80652038E7BA00955623 /* SentCell.xib */; };
 		432A806D2038E7BA00955623 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A80662038E7BA00955623 /* RegisterViewController.swift */; };
 		432A806E2038E7BA00955623 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A80672038E7BA00955623 /* Message.swift */; };
-		432A80702038E90200955623 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 432A806F2038E90100955623 /* Images.xcassets */; };
+		432A80702038E90200955623 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 432A806F2038E90100955623 /* Assets.xcassets */; };
 		434AC2EF2038DDFD006CFB9F /* Cloud_Chat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 434AC2ED2038DDFD006CFB9F /* Cloud_Chat.xcdatamodeld */; };
 		434AC2F42038DDFD006CFB9F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 434AC2F22038DDFD006CFB9F /* LaunchScreen.storyboard */; };
 		E63B61EE05D3E3BF42DD2E42 /* Pods_Cloud_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FBC74FAE3CECA7C66DA7D0A /* Pods_Cloud_Chat.framework */; };
@@ -44,7 +44,7 @@
 		432A80652038E7BA00955623 /* SentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SentCell.xib; sourceTree = "<group>"; };
 		432A80662038E7BA00955623 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		432A80672038E7BA00955623 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-		432A806F2038E90100955623 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		432A806F2038E90100955623 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		434AC2E32038DDFD006CFB9F /* Cloud Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cloud Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		434AC2EE2038DDFD006CFB9F /* Cloud_Chat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Cloud_Chat.xcdatamodel; sourceTree = "<group>"; };
 		434AC2F32038DDFD006CFB9F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -134,7 +134,7 @@
 				432A80732038F46F00955623 /* Controllers */,
 				432A80722038F46700955623 /* Views */,
 				432A80712038F45B00955623 /* DataModel */,
-				432A806F2038E90100955623 /* Images.xcassets */,
+				432A806F2038E90100955623 /* Assets.xcassets */,
 				434AC2F52038DDFD006CFB9F /* Info.plist */,
 				432A80512038E53600955623 /* GoogleService-Info.plist */,
 				432A80592038E77900955623 /* AppDelegate.swift */,
@@ -215,7 +215,7 @@
 			files = (
 				432A80692038E7BA00955623 /* MessageCell.xib in Resources */,
 				432A806C2038E7BA00955623 /* SentCell.xib in Resources */,
-				432A80702038E90200955623 /* Images.xcassets in Resources */,
+				432A80702038E90200955623 /* Assets.xcassets in Resources */,
 				434AC2F42038DDFD006CFB9F /* LaunchScreen.storyboard in Resources */,
 				432A80522038E53600955623 /* GoogleService-Info.plist in Resources */,
 				432A80542038E70E00955623 /* Main.storyboard in Resources */,

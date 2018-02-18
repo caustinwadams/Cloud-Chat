@@ -4,13 +4,13 @@
 //
 //  This is the model class that represents the blueprint for a message
 
+import Foundation
+
 class Message {
     
-    //TODO: Messages need a messageBody and a sender variable
     var reciever: String = ""
     var sender: String = ""
     var messageBody: String = ""
-    
-    
-    
+    var timeSent = Date()
+
 }

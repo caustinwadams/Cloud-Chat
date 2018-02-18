@@ -17,10 +17,12 @@ class RegisterViewController: UIViewController {
     @IBOutlet var emailTextfield: UITextField!
     @IBOutlet var passwordTextfield: UITextField!
     
+    @IBOutlet weak var registerButton: UIButton!
     
     //MARK: - On Load Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerButton.layer.cornerRadius = registerButton.frame.height / 2
     }
 
     override func didReceiveMemoryWarning() {
