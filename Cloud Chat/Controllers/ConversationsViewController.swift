@@ -8,19 +8,21 @@
 
 import UIKit
 import Firebase
+import CoreData
 
 class ConversationsViewController: UITableViewController,
                                    AddConversationDelegate {
     
     // MARK: - Properties
-    var conversations : [String] = ["austin", "nick"]
-    
+    var conversations = [Conversation]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistantContainer.viewContext
 
 
     
     // MARK: - On Load Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadConversations()
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,13 +46,13 @@ class ConversationsViewController: UITableViewController,
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "conversationCell", for: indexPath)
 
-        cell.textLabel?.text = conversations[indexPath.row]
+        cell.textLabel?.text = conversations[indexPath.row].user
 
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let toUser : String = conversations[indexPath.row]
+        let toUser : String = conversations[indexPath.row].user!
         
         let recipient : String = toUser
         
@@ -58,16 +60,12 @@ class ConversationsViewController: UITableViewController,
     }
     
     
-    // MARK: - Conversation Delegate Method
-    func addConvo(for user: String) {
-        conversations.append(user)
-        self.tableView.reloadData()
-    }
+
     
 
 
     
-    // MARK: - Navigation
+    // MARK: - Navigation Methods
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -84,6 +82,7 @@ class ConversationsViewController: UITableViewController,
         }
         
     }
+    
  
     @IBAction func logoutPressed(_ sender: UIBarButtonItem) {
         
@@ -102,6 +101,40 @@ class ConversationsViewController: UITableViewController,
         
         performSegue(withIdentifier: "addConvo", sender: self)
         
+    }
+    
+    
+    
+    // MARK: - Saving and Loading from CoreData
+    
+    func saveConversations() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving conversations: \(error)")
+        }
+    }
+    
+    
+    func loadConversations(with request: NSFetchRequest<Conversation> = Conversation.fetchRequest()) {
+        do {
+            conversations = try context.fetch(request)
+        } catch {
+            print("Error loading conversations: \(error)")
+        }
+    }
+    
+    
+    
+    
+    
+    // MARK: - Conversation Delegate Method
+    func addConvo(for user: String) {
+        let convo = Conversation(context: self.context)
+        convo.user = user
+        conversations.append(convo)
+        saveConversations()
+        self.tableView.reloadData()
     }
     
 }

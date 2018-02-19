@@ -210,27 +210,28 @@ class ChatViewController: UIViewController,
     @IBAction func sendPressed(_ sender: AnyObject) {
         
         messageTextfield.endEditing(true)
-        //TODO: Send the message to Firebase and save it in our database
         messageTextfield.isEnabled = false
         sendButton.isEnabled = false
         
         let messageDB = Database.database().reference().child("Messages").child(self.sender).child(recipient)
         let messageDB2 = Database.database().reference().child("Messages").child(recipient).child(self.sender)
-        
+        //print("Cur time = \(Date())")
+        let date = Date()
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: date)
+        let minutes = calendar.component(.minute, from: date)
+        print("Current Time: \(hour):\(minutes)")
         let messageDictionary = ["Sender" : self.sender,
                                  "Reciever" : recipient,
-                                 "MessageBody" : messageTextfield.text!]
+                                 "MessageBody" : messageTextfield.text!,
+                                 "Time" : "\(Date())"]
         
         messageDB.childByAutoId().setValue(messageDictionary) {
             (error, reference) in
             if error == nil {
-                print("Message Saved to my DB Successfully!")
-                
-                
                 messageDB2.childByAutoId().setValue(messageDictionary) {
                     (error2, reference2) in
                     if error2 == nil {
-                        print("Message Saved to recipient DB Successfully!")
                         self.messageTextfield.text = ""
                     } else {
                         print(error2!)
@@ -248,10 +249,12 @@ class ChatViewController: UIViewController,
         
     }
     
-    //TODO: Create the retrieveMessages method here:
+    //TODO: Could possibbly detect messages deleted from Firebase here (indicate read)
     func retrieveMessages() {
         
         let messageDB = Database.database().reference().child("Messages").child(self.sender).child(recipient)
+        // TODO: Here is what we can put in the convo view controller, then pass to here
+        // and observe forchildren added here and in other convos
         messageDB.observe(.childAdded) {
             (snapshot) in
                     let snapshotValue = snapshot.value as! Dictionary<String, String>
