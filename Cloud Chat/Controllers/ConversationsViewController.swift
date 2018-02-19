@@ -47,6 +47,7 @@ class ConversationsViewController: UITableViewController,
         let cell = tableView.dequeueReusableCell(withIdentifier: "conversationCell", for: indexPath)
 
         cell.textLabel?.text = conversations[indexPath.row].user
+        cell.accessoryType = .disclosureIndicator
 
         return cell
     }
