@@ -18,7 +18,7 @@ class ChatViewController: UIViewController,
     
     // MARK: - Properties
     // Declare instance variables here
-    var messageArray : [Message] = [Message]()
+    var messageArray = [Message]()
     
     // We've pre-linked the IBOutlets
     @IBOutlet var heightConstraint: NSLayoutConstraint!
@@ -28,8 +28,8 @@ class ChatViewController: UIViewController,
     
     var recipient: String = ""
     let sender : String = (Auth.auth().currentUser?.email)!.components(separatedBy: "@")[0]
-    
-    
+    var currentConversation: Conversation!
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistantContainer.viewContext
     
     // MARK: - Load Methods
     @objc
@@ -78,7 +78,6 @@ class ChatViewController: UIViewController,
     var i = 0
     
     
-    //TODO: Declare cellForRowAtIndexPath here:
     @objc
     func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -167,11 +166,7 @@ class ChatViewController: UIViewController,
     ///////////////////////////////////////////
     
     //MARK:- TextField Delegate Methods
-    
-    
 
-    
-    //TODO: Declare textFieldDidBeginEditing here:
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
@@ -188,8 +183,6 @@ class ChatViewController: UIViewController,
     }
     
     
-    
-    //TODO: Declare textFieldDidEndEditing here:
     func textFieldDidEndEditing(_ textField: UITextField) {
 //        UIView.animate(withDuration: 0.3) {
 //            self.heightConstraint.constant = 50
@@ -261,10 +254,11 @@ class ChatViewController: UIViewController,
                     let text = snapshotValue["MessageBody"]!
                     let curSender = snapshotValue["Sender"]!
                     //print("\(curSender) sent: \(text)")
-                    let message = Message()
+                    let message = Message(context: self.context)
                     message.messageBody = text
                     message.sender = curSender
                     message.reciever = self.sender
+                    message.date = "\(Date())"
                     
                     self.messageArray.append(message)
                     
