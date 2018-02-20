@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import ChameleonFramework
+import CoreData
 
 
 class ChatViewController: UIViewController,
@@ -62,6 +63,7 @@ class ChatViewController: UIViewController,
         
         configureTableView()
         
+        loadCachedMessages()
         retrieveMessages()
         
         messageTableView.separatorStyle = .none
@@ -195,20 +197,15 @@ class ChatViewController: UIViewController,
     
     
     //MARK: - Send & Recieve from Firebase
-    
-    
-    
-    
-    
+
     @IBAction func sendPressed(_ sender: AnyObject) {
         
         messageTextfield.endEditing(true)
         messageTextfield.isEnabled = false
         sendButton.isEnabled = false
         
-        let messageDB = Database.database().reference().child("Messages").child(self.sender).child(recipient)
+        //let messageDB = Database.database().reference().child("Messages").child(self.sender).child(recipient)
         let messageDB2 = Database.database().reference().child("Messages").child(recipient).child(self.sender)
-        //print("Cur time = \(Date())")
         let date = Date()
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: date)
@@ -219,35 +216,38 @@ class ChatViewController: UIViewController,
                                  "MessageBody" : messageTextfield.text!,
                                  "Time" : "\(Date())"]
         
-        messageDB.childByAutoId().setValue(messageDictionary) {
-            (error, reference) in
-            if error == nil {
-                messageDB2.childByAutoId().setValue(messageDictionary) {
-                    (error2, reference2) in
-                    if error2 == nil {
-                        self.messageTextfield.text = ""
-                    } else {
-                        print(error2!)
-                    }
-                }
-                
-                
-                self.messageTextfield.isEnabled = true
-                self.sendButton.isEnabled = true
+
+        messageDB2.childByAutoId().setValue(messageDictionary) {
+            (error2, reference2) in
+            if error2 == nil {
                 self.messageTextfield.text = ""
+                
+                let newMessage = Message(context: self.context)
+                newMessage.sender = messageDictionary["Sender"]
+                newMessage.reciever = messageDictionary["Reciever"]
+                newMessage.messageBody = messageDictionary["MessageBody"]
+                newMessage.date = messageDictionary["Time"]
+                newMessage.parentConversation = self.currentConversation
+                self.messageArray.append(newMessage)
+                self.saveMessages()
+                
             } else {
-                print(error!)
+                print(error2!)
             }
         }
+                
+                
+        self.messageTextfield.isEnabled = true
+        self.sendButton.isEnabled = true
+        self.messageTextfield.text = ""
+
         
     }
     
-    //TODO: Could possibbly detect messages deleted from Firebase here (indicate read)
+    
     func retrieveMessages() {
-        
+
         let messageDB = Database.database().reference().child("Messages").child(self.sender).child(recipient)
-        // TODO: Here is what we can put in the convo view controller, then pass to here
-        // and observe forchildren added here and in other convos
         messageDB.observe(.childAdded) {
             (snapshot) in
                     let snapshotValue = snapshot.value as! Dictionary<String, String>
@@ -259,11 +259,21 @@ class ChatViewController: UIViewController,
                     message.sender = curSender
                     message.reciever = self.sender
                     message.date = "\(Date())"
-                    
+                    message.parentConversation = self.currentConversation
+
                     self.messageArray.append(message)
-                    
+                    self.saveMessages()
+
+
+                    messageDB.removeValue() {
+                        (error, _) in
+                        if error != nil {
+                            print("Error: \(error!)")
+                        }
+                    }
+
                     self.configureTableView()
-                    
+
                     self.messageTableView.reloadData()
 
         }
@@ -286,6 +296,37 @@ class ChatViewController: UIViewController,
         
         UIView.animate(withDuration: duration, delay: 0.0, options: .init(rawValue: UInt(curve)), animations: { self.heightConstraint.constant = 50
             self.view.layoutIfNeeded()}, completion: nil)
+    }
+    
+    
+    
+    // MARK: - Saving / Loading from CoreData
+    func saveMessages() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving messages: \(error)")
+        }
+        
+        self.messageTableView.reloadData()
+    }
+    
+    func loadCachedMessages(with request: NSFetchRequest<Message> = Message.fetchRequest(),
+                      predicate: NSPredicate? = nil) {
+        let userPredicate = NSPredicate(format: "parentConversation.user MATCHES %@", currentConversation!.user!)
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [userPredicate,
+                                                                                    additionalPredicate])
+        } else {
+            request.predicate = userPredicate
+        }
+        do {
+            messageArray = try context.fetch(request)
+        } catch {
+            print("Error loading conversations: \(error)")
+        }
+        
+        self.messageTableView.reloadData()
     }
     
 

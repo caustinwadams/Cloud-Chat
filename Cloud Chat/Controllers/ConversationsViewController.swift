@@ -33,6 +33,16 @@ class ConversationsViewController: UITableViewController,
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    func findConversation(withName name: String) -> Conversation? {
+        for convo in conversations {
+            if convo.user == name {
+                return convo
+            }
+        }
+        return nil
+    }
 
     // MARK: - Table view data source
 
@@ -60,8 +70,9 @@ class ConversationsViewController: UITableViewController,
         let toUser : String = conversations[indexPath.row].user!
         
         let recipient : String = toUser
+        let convo = findConversation(withName: recipient)
         
-        performSegue(withIdentifier: "goToChat", sender: recipient)
+        performSegue(withIdentifier: "goToChat", sender: convo!)
     }
     
     
@@ -83,7 +94,9 @@ class ConversationsViewController: UITableViewController,
         else if (segue.identifier == "goToChat") {
             let controller = segue.destination as! ChatViewController
             //print(sender as! String)
-            controller.recipient = sender as! String
+            
+            controller.recipient = (sender as! Conversation).user!
+            controller.currentConversation = sender as! Conversation
         }
         
     }
@@ -107,6 +120,8 @@ class ConversationsViewController: UITableViewController,
         performSegue(withIdentifier: "addConvo", sender: self)
         
     }
+    
+
     
     
     
