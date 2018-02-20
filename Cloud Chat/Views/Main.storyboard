@@ -318,9 +318,9 @@
                     <navigationItem key="navigationItem" title="Log In" id="GCy-uw-FP0"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <outlet property="emailTextfield" destination="ZWF-xv-G1L" id="A9I-P9-2rL"/>
                         <outlet property="loginButton" destination="OD6-NY-DlK" id="Dma-mv-kbG"/>
                         <outlet property="passwordTextfield" destination="zuQ-XP-4Q7" id="FBf-fZ-iYp"/>
+                        <outlet property="userTextField" destination="ZWF-xv-G1L" id="A9I-P9-2rL"/>
                         <segue destination="EYX-bz-W3n" kind="push" identifier="goToConversations" id="eod-8g-pH3"/>
                     </connections>
                 </viewController>
@@ -376,7 +376,7 @@
                                 <rect key="frame" x="0.0" y="64" width="320" height="454"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="MessageCell" id="jHH-VD-leb">
+                                    <tableViewCell contentMode="scaleToFill" misplaced="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="MessageCell" id="jHH-VD-leb">
                                         <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jHH-VD-leb" id="HGz-6w-eF9">
@@ -384,7 +384,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SentCell" id="DPm-W8-C8n" customClass="SentMessageCell" customModule="Cloud_Chat" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" misplaced="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SentCell" id="DPm-W8-C8n" customClass="SentMessageCell" customModule="Cloud_Chat" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="66" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DPm-W8-C8n" id="avj-YG-JMP">

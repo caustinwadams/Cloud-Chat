@@ -14,14 +14,18 @@ class ConversationsViewController: UITableViewController,
                                    AddConversationDelegate {
     
     // MARK: - Properties
+    
     var conversations = [Conversation]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistantContainer.viewContext
-
+    var loggedInUser: User!
 
     
     // MARK: - On Load Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("These are the conversations for \(loggedInUser.name!)")
+        
         loadConversations()
     }
 
@@ -117,15 +121,29 @@ class ConversationsViewController: UITableViewController,
     }
     
     
-    func loadConversations(with request: NSFetchRequest<Conversation> = Conversation.fetchRequest()) {
+    func loadConversations(with request: NSFetchRequest<Conversation> = Conversation.fetchRequest(),
+                           predicate: NSPredicate? = nil) {
+        
+        let userPredicate = NSPredicate(format: "parentUser.name MATCHES %@", loggedInUser!.name!)
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [userPredicate,
+                                                                                    additionalPredicate])
+        } else {
+            request.predicate = userPredicate
+        }
         do {
             conversations = try context.fetch(request)
         } catch {
             print("Error loading conversations: \(error)")
         }
+        
+        tableView.reloadData()
     }
     
-    
+
+//    func loadConversations() {
+//        conversations = parentUser.conversations
+//    }
     
     
     
@@ -133,6 +151,7 @@ class ConversationsViewController: UITableViewController,
     func addConvo(for user: String) {
         let convo = Conversation(context: self.context)
         convo.user = user
+        convo.parentUser = self.loggedInUser
         conversations.append(convo)
         saveConversations()
         self.tableView.reloadData()
