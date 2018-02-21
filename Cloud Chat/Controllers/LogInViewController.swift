@@ -1,6 +1,6 @@
 //
 //  LogInViewController.swift
-//  Flash Chat
+//  Cloud Chat
 //
 //  This is the view controller where users login
 

@@ -1,9 +1,6 @@
 //
 //  AddConvoViewController.swift
-//  Flash Chat
-//
-//  Created by C. Austin Adams on 2/11/18.
-//  Copyright © 2018 London App Brewery. All rights reserved.
+//  Cloud Chat
 //
 
 import UIKit

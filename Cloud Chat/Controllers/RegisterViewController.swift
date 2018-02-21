@@ -1,6 +1,6 @@
 //
 //  RegisterViewController.swift
-//  Flash Chat
+//  Cloud Chat
 //
 //  This is the View Controller which registers new users with Firebase
 //
@@ -36,7 +36,7 @@ class RegisterViewController: UIViewController {
         SVProgressHUD.show()
         
         //TODO: Set up a new user on our Firbase database
-        Auth.auth().createUser(withEmail: emailTextfield.text!,
+        Auth.auth().createUser(withEmail: emailTextfield.text! + "@email.com",
                                password: passwordTextfield.text!) {
             (user, error) in
                                 

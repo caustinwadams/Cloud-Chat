@@ -2,9 +2,7 @@
 //  ViewController.swift
 //  Flash Chat
 //
-//  Created by Angela Yu on 29/08/2015.
-//  Copyright (c) 2015 London App Brewery. All rights reserved.
-//
+
 
 import UIKit
 import Firebase
@@ -31,6 +29,8 @@ class ChatViewController: UIViewController,
     let sender : String = (Auth.auth().currentUser?.email)!.components(separatedBy: "@")[0]
     var currentConversation: Conversation!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistantContainer.viewContext
+    
+    var dbRef : DatabaseReference!
     
     // MARK: - Load Methods
     @objc
@@ -313,7 +313,10 @@ class ChatViewController: UIViewController,
     
     func loadCachedMessages(with request: NSFetchRequest<Message> = Message.fetchRequest(),
                       predicate: NSPredicate? = nil) {
-        let userPredicate = NSPredicate(format: "parentConversation.user MATCHES %@", currentConversation!.user!)
+        let predicateFormate = "parentConversation.user MATCHES %@ && parentConversation.parentUser.name MATCHES %@"
+        let userPredicate = NSPredicate(format: predicateFormate,
+                                        currentConversation!.user!,
+                                        currentConversation!.parentUser!.name!)
         if let additionalPredicate = predicate {
             request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [userPredicate,
                                                                                     additionalPredicate])

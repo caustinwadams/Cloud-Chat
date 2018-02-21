@@ -1,6 +1,6 @@
 //
 //  ConversationsViewController.swift
-//  Flash Chat
+//  Cloud Chat
 //
 //  Created by C. Austin Adams on 2/11/18.
 //  Copyright © 2018 London App Brewery. All rights reserved.
@@ -16,6 +16,8 @@ class ConversationsViewController: UITableViewController,
     // MARK: - Properties
     
     var conversations = [Conversation]()
+    var convosDictionary : [String : Conversation] = [:]
+    var numNewMessages : [String : Int] = [:]
     let context = (UIApplication.shared.delegate as! AppDelegate).persistantContainer.viewContext
     var loggedInUser: User!
 
@@ -25,7 +27,7 @@ class ConversationsViewController: UITableViewController,
         super.viewDidLoad()
         
         print("These are the conversations for \(loggedInUser.name!)")
-        
+        retrieveMessages()
         loadConversations()
     }
 
@@ -35,14 +37,14 @@ class ConversationsViewController: UITableViewController,
     }
     
     
-    func findConversation(withName name: String) -> Conversation? {
-        for convo in conversations {
-            if convo.user == name {
-                return convo
-            }
-        }
-        return nil
-    }
+//    func findConversation(withName name: String) -> Conversation? {
+//        for convo in conversations {
+//            if convo.user == name {
+//                return convo
+//            }
+//        }
+//        return nil
+//    }
 
     // MARK: - Table view data source
 
@@ -70,7 +72,7 @@ class ConversationsViewController: UITableViewController,
         let toUser : String = conversations[indexPath.row].user!
         
         let recipient : String = toUser
-        let convo = findConversation(withName: recipient)
+        let convo = convosDictionary[recipient]
         
         performSegue(withIdentifier: "goToChat", sender: convo!)
     }
@@ -94,9 +96,9 @@ class ConversationsViewController: UITableViewController,
         else if (segue.identifier == "goToChat") {
             let controller = segue.destination as! ChatViewController
             //print(sender as! String)
-            
-            controller.recipient = (sender as! Conversation).user!
-            controller.currentConversation = sender as! Conversation
+            let convoToSend = sender as! Conversation
+            controller.recipient = convoToSend.user!
+            controller.currentConversation = convoToSend
         }
         
     }
@@ -148,6 +150,10 @@ class ConversationsViewController: UITableViewController,
         }
         do {
             conversations = try context.fetch(request)
+            for convo in  conversations {
+                convosDictionary[convo.user!] = convo
+                numNewMessages[convo.user!] = 0
+            }
         } catch {
             print("Error loading conversations: \(error)")
         }
@@ -168,8 +174,64 @@ class ConversationsViewController: UITableViewController,
         convo.user = user
         convo.parentUser = self.loggedInUser
         conversations.append(convo)
+        convosDictionary[convo.user!] = convo
+        numNewMessages[convo.user!] = 0
         saveConversations()
         self.tableView.reloadData()
+    }
+    
+    
+    
+    
+//    // MARK: - Core Data Functions
+    // TODO: Retrieve messages here but dont delete them from Firebase until they are seen in the conversation
+    func retrieveMessages() {
+
+        let messageDB = Database.database().reference().child("Messages").child(loggedInUser.name!)
+        messageDB.observe(.childAdded) {
+            (snapshot) in
+            
+            let snapshotValue = snapshot.value as! Dictionary<String,Dictionary<String,String>>
+            
+            for key in snapshotValue.keys {
+                let messageDict : [String:String] = snapshotValue[key]!
+                let curSender = messageDict["Sender"]!
+
+                if self.convosDictionary[curSender] == nil {
+                    self.addConvo(for: curSender)
+                }
+                
+                self.numNewMessages[curSender]! += 1
+                
+            }
+            
+//            //print("\(curSender) sent: \(text)")
+//            let message = Message(context: self.context)
+//            message.messageBody = text
+//            message.sender = curSender
+//            message.reciever = self.loggedInUser.name!
+//            message.date = "\(Date())"
+//            if let convo = self.convosDictionary[curSender] {
+//                con
+//            }
+//
+//            self.messageArray.append(message)
+//            self.saveMessages()
+
+            // Dont remove the messages from just the convos view.
+            // Want to keep them until read so we have notifications
+//            messageDB.removeValue() {
+//                (error, _) in
+//                if error != nil {
+//                    print("Error: \(error!)")
+//                }
+//            }
+//
+//            self.configureTableView()
+//
+//            self.messageTableView.reloadData()
+
+        }
     }
     
 }
