@@ -10,6 +10,28 @@ import UIKit
 import Firebase
 import CoreData
 
+
+// MARK: - Conversation Cell Class
+class ConversationCell: UITableViewCell {
+    
+    @IBOutlet weak var notificationView: UIView!
+    @IBOutlet weak var notificationCountLabel: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        // Configure the view for the selected state
+    }
+    
+}
+
+
+
+// MARK: - Conversation View Controller Class
 class ConversationsViewController: UITableViewController,
                                    AddConversationDelegate {
     
@@ -29,6 +51,10 @@ class ConversationsViewController: UITableViewController,
         print("These are the conversations for \(loggedInUser.name!)")
         retrieveMessages()
         loadConversations()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,11 +86,20 @@ class ConversationsViewController: UITableViewController,
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "conversationCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "conversationCell", for: indexPath) as! ConversationCell
 
-        cell.textLabel?.text = conversations[indexPath.row].user
+        let convo = conversations[indexPath.row]
+        cell.textLabel?.text = convo.user
         cell.accessoryType = .disclosureIndicator
-
+        let messageCount = numNewMessages[convo.user!]!
+        print("\(convo.user!): \(messageCount)")
+        if messageCount > 0 {
+            print("Setting noti label")
+            cell.notificationCountLabel.text = "\(messageCount)"
+            cell.notificationView.backgroundColor = UIColor.blue
+            cell.notificationView.layer.cornerRadius = cell.notificationView.frame.height / 2
+            cell.notificationView.clipsToBounds = true
+        }
         return cell
     }
     
@@ -99,6 +134,7 @@ class ConversationsViewController: UITableViewController,
             let convoToSend = sender as! Conversation
             controller.recipient = convoToSend.user!
             controller.currentConversation = convoToSend
+            numNewMessages[convoToSend.user!] = 0
         }
         
     }
@@ -201,7 +237,10 @@ class ConversationsViewController: UITableViewController,
                     self.addConvo(for: curSender)
                 }
                 
+                print("Messages for: \(curSender)")
+                print("\(self.numNewMessages[curSender]!)")
                 self.numNewMessages[curSender]! += 1
+                print("\(self.numNewMessages[curSender]!)")
                 
             }
             
@@ -229,7 +268,7 @@ class ConversationsViewController: UITableViewController,
 //
 //            self.configureTableView()
 //
-//            self.messageTableView.reloadData()
+            self.tableView.reloadData()
 
         }
     }
