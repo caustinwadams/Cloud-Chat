@@ -87,19 +87,24 @@ class ConversationsViewController: UITableViewController,
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "conversationCell", for: indexPath) as! ConversationCell
-
         let convo = conversations[indexPath.row]
         cell.textLabel?.text = convo.user
         cell.accessoryType = .disclosureIndicator
         let messageCount = numNewMessages[convo.user!]!
-        print("\(convo.user!): \(messageCount)")
+        
+        // Set notification label if there are any new messages for this conversation
         if messageCount > 0 {
-            print("Setting noti label")
             cell.notificationCountLabel.text = "\(messageCount)"
+            //cell.notificationView.alpha = 1.0
+            cell.notificationView.isHidden = false
             cell.notificationView.backgroundColor = UIColor.blue
             cell.notificationView.layer.cornerRadius = cell.notificationView.frame.height / 2
             cell.notificationView.clipsToBounds = true
+        } else {
+            //cell.notificationView.alpha = 0.0
+            cell.notificationView.isHidden = true
         }
+        
         return cell
     }
     
@@ -109,7 +114,7 @@ class ConversationsViewController: UITableViewController,
         let recipient : String = toUser
         let convo = convosDictionary[recipient]
         
-        performSegue(withIdentifier: "goToChat", sender: convo!)
+        performSegue(withIdentifier: "goToChat", sender: (convo!, indexPath))
     }
     
     
@@ -131,7 +136,11 @@ class ConversationsViewController: UITableViewController,
         else if (segue.identifier == "goToChat") {
             let controller = segue.destination as! ChatViewController
             //print(sender as! String)
-            let convoToSend = sender as! Conversation
+            let (convoToSend, path) = sender as! (Conversation, IndexPath)
+            // TODO: This may need to change because it may affect many cells
+            let cell = tableView(self.tableView, cellForRowAt: path) as! ConversationCell
+            print("\(cell.textLabel!.text!)")
+            //cell.notificationView.alpha = 0.0
             controller.recipient = convoToSend.user!
             controller.currentConversation = convoToSend
             numNewMessages[convoToSend.user!] = 0
