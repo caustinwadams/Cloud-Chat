@@ -15,12 +15,18 @@ class AddConvoViewController: UIViewController {
     
     @IBOutlet weak var nicknameTextField: UITextField!
     
-
+    @IBOutlet weak var createButton: UIButton!
+    
+    @IBOutlet weak var cancelButton: UIButton!
     
     // MARK: - Load Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        createButton.layer.cornerRadius = createButton.frame.height / 2
+        createButton.clipsToBounds = true
+        cancelButton.layer.cornerRadius = cancelButton.frame.height / 2
+        cancelButton.clipsToBounds = true
+        
         // Do any additional setup after loading the view.
     }
 

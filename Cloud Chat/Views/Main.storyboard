@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -37,7 +38,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uWY-w2-6La">
                                 <rect key="frame" x="40" y="343" width="240" height="45"/>
-                                <color key="backgroundColor" red="0.1819814891" green="0.69426733259999995" blue="0.53024792669999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.18116629123687744" green="0.69536906480789185" blue="0.53015196323394775" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="TbY-W7-xgr"/>
                                 </constraints>
@@ -240,42 +241,61 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0RJ-e2-fpo">
-                                <rect key="frame" x="82" y="269" width="156" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <state key="normal" title="Create"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0RJ-e2-fpo">
+                                <rect key="frame" x="82" y="180" width="156" height="36"/>
+                                <color key="backgroundColor" red="0.14660593869999999" green="0.63665360209999999" blue="0.30291455979999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Create">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="createButtonPressed:" destination="0ak-SP-b0w" eventType="touchUpInside" id="0rk-iY-Yfd"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifG-XA-cbS">
-                                <rect key="frame" x="82" y="307" width="156" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <state key="normal" title="Cancel"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your name for them" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1CT-eG-t5R">
+                                <rect key="frame" x="38" y="140" width="245" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="The person's username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="akV-hl-3vc">
+                                <rect key="frame" x="38" y="95" width="245" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifG-XA-cbS">
+                                <rect key="frame" x="82" y="226" width="156" height="36"/>
+                                <color key="backgroundColor" red="0.070588235289999995" green="0.52941176469999995" blue="0.59215686270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="cancelButtonPressed:" destination="0ak-SP-b0w" eventType="touchUpInside" id="k51-DR-zhl"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your name for them" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1CT-eG-t5R">
-                                <rect key="frame" x="38" y="235" width="245" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="The person's username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="akV-hl-3vc">
-                                <rect key="frame" x="38" y="197" width="245" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.47512478299999999" green="0.82530094720000002" blue="0.96017795139999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="1CT-eG-t5R" firstAttribute="leading" secondItem="DFp-A3-4hE" secondAttribute="leadingMargin" constant="21.5" id="1cb-kr-Vf0"/>
+                            <constraint firstItem="akV-hl-3vc" firstAttribute="leading" secondItem="DFp-A3-4hE" secondAttribute="leadingMargin" constant="21.5" id="Fqz-Ut-03G"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="0RJ-e2-fpo" secondAttribute="trailing" constant="66" id="He0-d7-KqP"/>
+                            <constraint firstItem="0RJ-e2-fpo" firstAttribute="leading" secondItem="DFp-A3-4hE" secondAttribute="leadingMargin" constant="66" id="MLZ-Pr-Z7g"/>
+                            <constraint firstItem="akV-hl-3vc" firstAttribute="top" secondItem="1vZ-M9-NAe" secondAttribute="bottom" constant="75" id="MVJ-zU-fYb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="1CT-eG-t5R" secondAttribute="trailing" constant="21.5" id="OfL-fk-HMl"/>
+                            <constraint firstItem="ifG-XA-cbS" firstAttribute="top" secondItem="0RJ-e2-fpo" secondAttribute="bottom" constant="10" id="PKH-QC-5pL"/>
+                            <constraint firstItem="0RJ-e2-fpo" firstAttribute="top" secondItem="1CT-eG-t5R" secondAttribute="bottom" constant="10" id="Wfd-jv-qlI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="akV-hl-3vc" secondAttribute="trailing" constant="21.5" id="auf-eW-Zc3"/>
+                            <constraint firstItem="ifG-XA-cbS" firstAttribute="leading" secondItem="DFp-A3-4hE" secondAttribute="leadingMargin" constant="66" id="g39-9n-yYP"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ifG-XA-cbS" secondAttribute="trailing" constant="66" id="mjL-Mu-vWL"/>
+                            <constraint firstItem="1CT-eG-t5R" firstAttribute="top" secondItem="akV-hl-3vc" secondAttribute="bottom" constant="15" id="qcm-IP-aPz"/>
+                        </constraints>
                     </view>
                     <connections>
+                        <outlet property="cancelButton" destination="ifG-XA-cbS" id="H2Q-L5-aeq"/>
+                        <outlet property="createButton" destination="0RJ-e2-fpo" id="WKu-MW-B7T"/>
                         <outlet property="nicknameTextField" destination="1CT-eG-t5R" id="33A-dp-b9o"/>
                         <outlet property="recipientTextField" destination="akV-hl-3vc" id="wG6-w7-GdQ"/>
                     </connections>
@@ -306,7 +326,7 @@
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OD6-NY-DlK">
                                         <rect key="frame" x="16" y="164" width="288" height="30"/>
-                                        <color key="backgroundColor" red="0.14539031684398651" green="0.63518619537353516" blue="0.304024338722229" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.14660593867301941" green="0.6366536021232605" blue="0.30291455984115601" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Log In">
                                             <color key="titleColor" red="1" green="0.99997437000274658" blue="0.99999129772186279" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

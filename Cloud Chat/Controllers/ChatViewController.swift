@@ -12,6 +12,7 @@ import CoreData
 // MARK: - Protocol for setting the last message for a conversation
 protocol LastMessageDelegate {
     func setLastMessage(for user: String, message: Message)
+    func clearNewMessages(for user: String)
 }
 
 class ChatViewController: UIViewController,
@@ -36,6 +37,8 @@ class ChatViewController: UIViewController,
     var lastMessageDelegate: LastMessageDelegate!
     
     var dbRef : DatabaseReference!
+    
+
     
     // MARK: - Load Methods
     @objc
@@ -216,12 +219,17 @@ class ChatViewController: UIViewController,
         messageTextfield.isEnabled = false
         sendButton.isEnabled = false
         
-
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateString = dateFormatter.string(from: date)
+        print(dateString)
+        
         let messageDB2 = Database.database().reference().child("Messages").child(recipient).child(self.sender)
         let messageDictionary = ["Sender" : self.sender,
                                  "Reciever" : recipient,
                                  "MessageBody" : messageTextfield.text!,
-                                 "Time" : "\(Date())"]
+                                 "Time" : dateString]
         
 
         messageDB2.childByAutoId().setValue(messageDictionary) {
@@ -255,38 +263,41 @@ class ChatViewController: UIViewController,
     
     
     func retrieveMessages() {
-
+        
         let messageDB = Database.database().reference().child("Messages").child(self.sender).child(recipient)
         messageDB.observe(.childAdded) {
             (snapshot) in
-                    let snapshotValue = snapshot.value as! Dictionary<String, String>
-                    let text = snapshotValue["MessageBody"]!
-                    let curSender = snapshotValue["Sender"]!
-                    let time = snapshotValue["Time"]!
-                    //print("\(curSender) sent: \(text)")
-                    let message = Message(context: self.context)
-                    message.messageBody = text
-                    message.sender = curSender
-                    message.reciever = self.sender
-                    message.date = time
-                    message.parentConversation = self.currentConversation
-                    self.lastMessageDelegate.setLastMessage(for: message.sender!,
-                                                            message: message)
+            
+                print("Message added in CHATS")
+                let snapshotValue = snapshot.value as! Dictionary<String, String>
+                let text = snapshotValue["MessageBody"]!
+                let curSender = snapshotValue["Sender"]!
+                let time = snapshotValue["Time"]!
+                //print("\(curSender) sent: \(text)")
+                let message = Message(context: self.context)
+                message.messageBody = text
+                message.sender = curSender
+                message.reciever = self.sender
+                message.date = time
+                message.parentConversation = self.currentConversation
+                self.lastMessageDelegate.setLastMessage(for: message.sender!,
+                                                        message: message)
+                self.lastMessageDelegate.clearNewMessages(for: message.sender!)
+                self.messageArray.append(message)
+                self.saveMessages()
 
-                    self.messageArray.append(message)
-                    self.saveMessages()
 
-
-                    messageDB.removeValue() {
-                        (error, _) in
-                        if error != nil {
-                            print("Error: \(error!)")
-                        }
+                messageDB.removeValue() {
+                    (error, _) in
+                    if error != nil {
+                        print("Error: \(error!)")
                     }
+                }
 
-                    self.configureTableView()
+                self.configureTableView()
 
-                    self.messageTableView.reloadData()
+                self.messageTableView.reloadData()
+            
 
         }
     }
@@ -345,11 +356,6 @@ class ChatViewController: UIViewController,
     }
     
     
-    
-    
-    func stringToDate() {
-        
-    }
     
 
 }

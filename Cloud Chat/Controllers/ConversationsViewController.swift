@@ -3,7 +3,6 @@
 //  Cloud Chat
 //
 //  Created by C. Austin Adams on 2/11/18.
-//  Copyright © 2018 London App Brewery. All rights reserved.
 //
 
 import UIKit
@@ -11,29 +10,8 @@ import Firebase
 import CoreData
 
 
-// MARK: - Conversation Cell Class
-class ConversationCell: UITableViewCell {
-    
-    @IBOutlet weak var notificationView: UIView!
-    @IBOutlet weak var notificationCountLabel: UILabel!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
-    
-}
-
-
-
 // MARK: - Conversation View Controller Class
-class ConversationsViewController: UITableViewController,
-                                   AddConversationDelegate {
+class ConversationsViewController: UITableViewController {
     
     // MARK: - Properties
     
@@ -44,11 +22,13 @@ class ConversationsViewController: UITableViewController,
     var lastMessageDictionary : [String : Message] = [:]
     let context = (UIApplication.shared.delegate as! AppDelegate).persistantContainer.viewContext
     var loggedInUser: User!
+    var userInChat : Bool = false
 
     
     // MARK: - On Load Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Registering the custom conversation cell
         tableView.register(UINib(nibName: "ConversationsCell",
                                         bundle: nil),
@@ -59,6 +39,7 @@ class ConversationsViewController: UITableViewController,
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        userInChat = false
         self.tableView.reloadData()
     }
 
@@ -96,7 +77,7 @@ class ConversationsViewController: UITableViewController,
         
         let recipient : String = toUser
         let convo = convosDictionary[recipient]
-        
+        userInChat = true
         performSegue(withIdentifier: "goToChat", sender: (convo!, indexPath))
     }
     
@@ -156,17 +137,44 @@ class ConversationsViewController: UITableViewController,
     
     
     // MARK: - Helper Methods
+    // Setting the labels in the paramter tableViewCell
     func setLabels(for tableCell: ConversationsCell, at row: Int) {
+        
         let convo = conversations[row]
         tableCell.conversationUserLabel.text! = nicknamesDictionary[convo.user!]!
         tableCell.conversationUserLabel.font = UIFont.boldSystemFont(ofSize: 16)
         
         // Setting the label for the last message
         if let lastMessage = convo.lastMessage {
+//            print(lastMessage.date!)
+//            print("CONVERTED TO: \(stringToDate(for: lastMessage.date!))")
+            var timeString = lastMessage.date!.split(separator: " ", maxSplits: 2, omittingEmptySubsequences: true)
+            let timeArr = timeString[1].split(separator: ":", maxSplits: 2, omittingEmptySubsequences: true)
+            var timeInt = Int(timeArr[0])!
+            if timeInt >= 12 {
+                if timeInt > 12 {
+                    timeInt -= 12
+                }
+                timeString.append("PM")
+            } else {
+                if timeInt == 0 {
+                    timeInt = 12
+                }
+                if timeString.count < 3 {
+                    timeString.append("AM")
+                }
+            }
+            
+            let realTime = "\(timeInt):\(timeArr[1]) \(timeString[2])"
+            tableCell.convoTimeLabel.text = realTime
+            print(realTime)
+            
+            //print(timeString)
             let body = lastMessage.messageBody!
             tableCell.convoMessageLabel.text! = body
         } else {
             tableCell.convoMessageLabel.text! = "(No Messages)"
+            tableCell.convoTimeLabel.text = "--:--"
         }
         
         let imageView = tableCell.convoImageView!
@@ -187,6 +195,16 @@ class ConversationsViewController: UITableViewController,
             tableCell.convoNotificationView.isHidden = true
         }
     }
+    
+    
+    func stringToDate(for str: String) -> Date {
+        print(str)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let date = dateFormatter.date(from: str)
+        return date!
+    }
+    
     
 
     
@@ -235,20 +253,7 @@ class ConversationsViewController: UITableViewController,
     
     
     
-    // MARK: - Conversation Delegate Method
-    func addConvo(for user: String, nickname: String) {
-        let convo = Conversation(context: self.context)
-        convo.user = user
-        convo.nickname = nickname
-        convo.parentUser = self.loggedInUser
-        conversations.append(convo)
-        convosDictionary[convo.user!] = convo
-        nicknamesDictionary[user] = nickname
-        numNewMessages[convo.user!] = 0
-        convo.numNewMessages = 0
-        saveConversations()
-        self.tableView.reloadData()
-    }
+
     
 
     
@@ -263,50 +268,51 @@ class ConversationsViewController: UITableViewController,
         let messageDB = Database.database().reference().child("Messages").child(loggedInUser.name!)
         messageDB.observe(.childAdded) {
             (snapshot) in
-            
-            let snapshotValue = snapshot.value as! Dictionary<String,Dictionary<String,String>>
-            
-            for key in snapshotValue.keys {
-                let messageDict : [String:String] = snapshotValue[key]!
-                let curSender = messageDict["Sender"]!
-                let text = messageDict["MessageBody"]!
-                if self.convosDictionary[curSender] == nil {
-                    self.addConvo(for: curSender, nickname: curSender)
-                }
+            if !self.userInChat {
+                print("Message Added in Convos")
+                let snapshotValue = snapshot.value as! Dictionary<String,Dictionary<String,String>>
                 
-                let message = Message(context: self.context)
-                message.messageBody = text
-                message.sender = curSender
-                message.reciever = self.loggedInUser.name!
-                message.parentConversation = self.convosDictionary[curSender]!
-                message.date = "\(Date())"
-                
-                messageDB.removeValue() {
-                    (error, _) in
-                    if error != nil {
-                        print("Error: \(error!)")
+                for key in snapshotValue.keys {
+                    let messageDict : [String:String] = snapshotValue[key]!
+                    let curSender = messageDict["Sender"]!
+                    let text = messageDict["MessageBody"]!
+                    let time = messageDict["Time"]!
+                    if self.convosDictionary[curSender] == nil {
+                        self.addConvo(for: curSender, nickname: curSender)
                     }
+                    
+                    let message = Message(context: self.context)
+                    message.messageBody = text
+                    message.sender = curSender
+                    message.reciever = self.loggedInUser.name!
+                    message.parentConversation = self.convosDictionary[curSender]!
+                    message.date = time
+                    
+                    messageDB.removeValue() {
+                        (error, _) in
+                        if error != nil {
+                            print("Error: \(error!)")
+                        }
+                    }
+                    
+                    self.setLastMessage(for: curSender, message: message)
+                    self.convosDictionary[curSender]!.numNewMessages += 1
+                    
+                    print("Messages for: \(curSender)")
+                    print("\(self.numNewMessages[curSender]!)")
+                    self.numNewMessages[curSender]! += 1
+                    print("\(self.numNewMessages[curSender]!)")
+                    
                 }
-                
-                self.setLastMessage(for: curSender, message: message)
-                self.convosDictionary[curSender]!.numNewMessages += 1
-                
-                print("Messages for: \(curSender)")
-                print("\(self.numNewMessages[curSender]!)")
-                self.numNewMessages[curSender]! += 1
-                print("\(self.numNewMessages[curSender]!)")
-                
+                self.tableView.reloadData()
             }
-            
-//            //print("\(curSender) sent: \(text)")
-
-            self.tableView.reloadData()
 
         }
     }
     
 }
 
+// MARK: - Last Message Delegate Definitions
 extension ConversationsViewController: LastMessageDelegate {
     func setLastMessage(for user: String, message: Message) {
         convosDictionary[user]!.lastMessage = message
@@ -314,5 +320,30 @@ extension ConversationsViewController: LastMessageDelegate {
         print("\(convosDictionary[user]!.lastMessage!.messageBody!)")
         saveConversations()
         tableView.reloadData()
+    }
+    
+    
+    func clearNewMessages(for user: String) {
+        convosDictionary[user]!.numNewMessages = 0
+        saveConversations()
+    }
+}
+
+
+// MARK: - Add Conversation Delegate Definitions
+extension ConversationsViewController: AddConversationDelegate {
+    // MARK: - Conversation Delegate Method
+    func addConvo(for user: String, nickname: String) {
+        let convo = Conversation(context: self.context)
+        convo.user = user
+        convo.nickname = nickname
+        convo.parentUser = self.loggedInUser
+        conversations.append(convo)
+        convosDictionary[convo.user!] = convo
+        nicknamesDictionary[user] = nickname
+        numNewMessages[convo.user!] = 0
+        convo.numNewMessages = 0
+        saveConversations()
+        self.tableView.reloadData()
     }
 }
