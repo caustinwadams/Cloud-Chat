@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Welcome-->
+        <!--Cloud Chat-->
         <scene sceneID="SAj-Rh-o9q">
             <objects>
                 <viewController storyboardIdentifier="welcomeVC" id="w26-XG-9cC" customClass="WelcomeViewController" customModule="Cloud_Chat" customModuleProvider="target" sceneMemberID="viewController">
@@ -68,7 +68,7 @@
                             <constraint firstItem="rV4-Sa-2Rb" firstAttribute="leading" secondItem="9g1-SA-C5Y" secondAttribute="leading" constant="40" id="d0O-ga-r05"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Welcome" id="qIL-hP-GCy"/>
+                    <navigationItem key="navigationItem" title="Cloud Chat" id="qIL-hP-GCy"/>
                     <connections>
                         <outlet property="cloud1" destination="UEj-EI-KDM" id="oYy-E9-LI7"/>
                         <outlet property="cloud2" destination="POv-WA-vtj" id="1hO-Pf-Eo1"/>
@@ -240,13 +240,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email of Recipient" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="akV-hl-3vc">
-                                <rect key="frame" x="38" y="231" width="245" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0RJ-e2-fpo">
                                 <rect key="frame" x="82" y="269" width="156" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -265,10 +258,25 @@
                                     <action selector="cancelButtonPressed:" destination="0ak-SP-b0w" eventType="touchUpInside" id="k51-DR-zhl"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your name for them" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1CT-eG-t5R">
+                                <rect key="frame" x="38" y="235" width="245" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="The person's username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="akV-hl-3vc">
+                                <rect key="frame" x="38" y="197" width="245" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.47512478299999999" green="0.82530094720000002" blue="0.96017795139999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
+                        <outlet property="nicknameTextField" destination="1CT-eG-t5R" id="33A-dp-b9o"/>
                         <outlet property="recipientTextField" destination="akV-hl-3vc" id="wG6-w7-GdQ"/>
                     </connections>
                 </viewController>

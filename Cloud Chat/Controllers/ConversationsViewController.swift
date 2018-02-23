@@ -39,6 +39,7 @@ class ConversationsViewController: UITableViewController,
     
     var conversations = [Conversation]()
     var convosDictionary : [String : Conversation] = [:]
+    var nicknamesDictionary : [String : String] = [:]
     var numNewMessages : [String : Int] = [:]
     let context = (UIApplication.shared.delegate as! AppDelegate).persistantContainer.viewContext
     var loggedInUser: User!
@@ -98,8 +99,8 @@ class ConversationsViewController: UITableViewController,
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "convoCell", for: indexPath) as! ConversationsCell
         let convo = conversations[indexPath.row]
-        cell.conversationUserLabel.text! = convo.user!
-        
+        cell.conversationUserLabel.text! = nicknamesDictionary[convo.user!]!
+        cell.conversationUserLabel.font = UIFont.boldSystemFont(ofSize: 16)
         
         let imageView = cell.convoImageView!
         imageView.image = UIImage(named:"no-photo")
@@ -109,16 +110,13 @@ class ConversationsViewController: UITableViewController,
         let messageCount = numNewMessages[convo.user!]!
         // Show notitfication if conversation has new messages
         if messageCount > 0 {
-            cell.conversationUserLabel.font = UIFont.boldSystemFont(ofSize: 16)
             let notiView = cell.convoNotificationView!
             cell.numMessagesLabel.text! = "\(messageCount)"
             notiView.isHidden = false
             notiView.backgroundColor = UIColor.blue
             notiView.layer.cornerRadius = notiView.frame.height / 2
-            
         } else {
             cell.convoNotificationView.isHidden = true
-            cell.conversationUserLabel.font = UIFont.systemFont(ofSize: 16)
         }
         return cell
     }
@@ -213,6 +211,7 @@ class ConversationsViewController: UITableViewController,
             conversations = try context.fetch(request)
             for convo in  conversations {
                 convosDictionary[convo.user!] = convo
+                nicknamesDictionary[convo.user!] = convo.nickname!
                 numNewMessages[convo.user!] = 0
             }
         } catch {
@@ -230,12 +229,14 @@ class ConversationsViewController: UITableViewController,
     
     
     // MARK: - Conversation Delegate Method
-    func addConvo(for user: String) {
+    func addConvo(for user: String, nickname: String) {
         let convo = Conversation(context: self.context)
         convo.user = user
+        convo.nickname = nickname
         convo.parentUser = self.loggedInUser
         conversations.append(convo)
         convosDictionary[convo.user!] = convo
+        nicknamesDictionary[user] = nickname
         numNewMessages[convo.user!] = 0
         saveConversations()
         self.tableView.reloadData()
@@ -260,7 +261,7 @@ class ConversationsViewController: UITableViewController,
                 let curSender = messageDict["Sender"]!
 
                 if self.convosDictionary[curSender] == nil {
-                    self.addConvo(for: curSender)
+                    self.addConvo(for: curSender, nickname: curSender)
                 }
                 
                 print("Messages for: \(curSender)")

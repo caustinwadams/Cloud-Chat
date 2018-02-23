@@ -13,6 +13,7 @@ class AddConvoViewController: UIViewController {
     var delegate: AddConversationDelegate!
     @IBOutlet weak var recipientTextField: UITextField!
     
+    @IBOutlet weak var nicknameTextField: UITextField!
     
 
     
@@ -37,7 +38,8 @@ class AddConvoViewController: UIViewController {
         // Fill in later (after delegate creation)
         if recipientTextField.text! != "" {
             let userToAdd = recipientTextField.text!
-            delegate.addConvo(for: userToAdd)
+            let nickname = nicknameTextField.text!
+            delegate.addConvo(for: userToAdd, nickname: nickname)
             self.dismiss(animated: true, completion: nil)
         }
      }
@@ -54,6 +56,6 @@ class AddConvoViewController: UIViewController {
 // MARK: - Delegate Definition
 protocol AddConversationDelegate {
     
-    func addConvo(for user: String)
+    func addConvo(for user: String, nickname: String)
     
 }
