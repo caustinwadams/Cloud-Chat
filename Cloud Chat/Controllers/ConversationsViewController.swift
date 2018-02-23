@@ -48,6 +48,12 @@ class ConversationsViewController: UITableViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        tableView.register(UINib(nibName: "ConversationsCell",
+                                        bundle: nil),
+                                  forCellReuseIdentifier: "convoCell")
+        
+        
         print("These are the conversations for \(loggedInUser.name!)")
         retrieveMessages()
         loadConversations()
@@ -74,6 +80,10 @@ class ConversationsViewController: UITableViewController,
 
     // MARK: - Table view data source
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -84,27 +94,32 @@ class ConversationsViewController: UITableViewController,
         return conversations.count
     }
 
-    
+    // Sets up the ConversationsCell with the correct information
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "conversationCell", for: indexPath) as! ConversationCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "convoCell", for: indexPath) as! ConversationsCell
         let convo = conversations[indexPath.row]
-        cell.textLabel?.text = convo.user
-        cell.accessoryType = .disclosureIndicator
+        cell.conversationUserLabel.text! = convo.user!
+        
+        
+        let imageView = cell.convoImageView!
+        imageView.image = UIImage(named:"no-photo")
+        imageView.layer.cornerRadius = imageView.frame.height / 2
+        imageView.clipsToBounds = true
+        
         let messageCount = numNewMessages[convo.user!]!
-        
-        // Set notification label if there are any new messages for this conversation
+        // Show notitfication if conversation has new messages
         if messageCount > 0 {
-            cell.notificationCountLabel.text = "\(messageCount)"
-            //cell.notificationView.alpha = 1.0
-            cell.notificationView.isHidden = false
-            cell.notificationView.backgroundColor = UIColor.blue
-            cell.notificationView.layer.cornerRadius = cell.notificationView.frame.height / 2
-            cell.notificationView.clipsToBounds = true
+            cell.conversationUserLabel.font = UIFont.boldSystemFont(ofSize: 16)
+            let notiView = cell.convoNotificationView!
+            cell.numMessagesLabel.text! = "\(messageCount)"
+            notiView.isHidden = false
+            notiView.backgroundColor = UIColor.blue
+            notiView.layer.cornerRadius = notiView.frame.height / 2
+            
         } else {
-            //cell.notificationView.alpha = 0.0
-            cell.notificationView.isHidden = true
+            cell.convoNotificationView.isHidden = true
+            cell.conversationUserLabel.font = UIFont.systemFont(ofSize: 16)
         }
-        
         return cell
     }
     
@@ -136,10 +151,11 @@ class ConversationsViewController: UITableViewController,
         else if (segue.identifier == "goToChat") {
             let controller = segue.destination as! ChatViewController
             //print(sender as! String)
-            let (convoToSend, path) = sender as! (Conversation, IndexPath)
+            let (convoToSend, _) = sender as! (Conversation, IndexPath)
             // TODO: This may need to change because it may affect many cells
-            let cell = tableView(self.tableView, cellForRowAt: path) as! ConversationCell
-            print("\(cell.textLabel!.text!)")
+            //let cell = tableView(self.tableView, cellForRowAt: path) as! ConversationsCell
+            //cell.conversationUserLabel.font = UIFont.systemFont(ofSize: 16)
+//            print("\(cell.textLabel!.text!)")
             //cell.notificationView.alpha = 0.0
             controller.recipient = convoToSend.user!
             controller.currentConversation = convoToSend
@@ -229,7 +245,8 @@ class ConversationsViewController: UITableViewController,
     
     
 //    // MARK: - Core Data Functions
-    // TODO: Retrieve messages here but dont delete them from Firebase until they are seen in the conversation
+    // TODO: Set the newest message for each conversation to a dictionary variable.
+    // Then we can display time and text of last message in each convo cell
     func retrieveMessages() {
 
         let messageDB = Database.database().reference().child("Messages").child(loggedInUser.name!)
