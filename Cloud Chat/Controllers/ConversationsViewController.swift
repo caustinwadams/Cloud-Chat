@@ -41,6 +41,7 @@ class ConversationsViewController: UITableViewController,
     var convosDictionary : [String : Conversation] = [:]
     var nicknamesDictionary : [String : String] = [:]
     var numNewMessages : [String : Int] = [:]
+    var lastMessageDictionary : [String : Message] = [:]
     let context = (UIApplication.shared.delegate as! AppDelegate).persistantContainer.viewContext
     var loggedInUser: User!
 
@@ -48,19 +49,16 @@ class ConversationsViewController: UITableViewController,
     // MARK: - On Load Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+        // Registering the custom conversation cell
         tableView.register(UINib(nibName: "ConversationsCell",
                                         bundle: nil),
                                   forCellReuseIdentifier: "convoCell")
-        
-        
         print("These are the conversations for \(loggedInUser.name!)")
         retrieveMessages()
         loadConversations()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.tableView.reloadData()
     }
 
@@ -69,15 +67,6 @@ class ConversationsViewController: UITableViewController,
         // Dispose of any resources that can be recreated.
     }
     
-    
-//    func findConversation(withName name: String) -> Conversation? {
-//        for convo in conversations {
-//            if convo.user == name {
-//                return convo
-//            }
-//        }
-//        return nil
-//    }
 
     // MARK: - Table view data source
 
@@ -98,26 +87,7 @@ class ConversationsViewController: UITableViewController,
     // Sets up the ConversationsCell with the correct information
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "convoCell", for: indexPath) as! ConversationsCell
-        let convo = conversations[indexPath.row]
-        cell.conversationUserLabel.text! = nicknamesDictionary[convo.user!]!
-        cell.conversationUserLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        
-        let imageView = cell.convoImageView!
-        imageView.image = UIImage(named:"no-photo")
-        imageView.layer.cornerRadius = imageView.frame.height / 2
-        imageView.clipsToBounds = true
-        
-        let messageCount = numNewMessages[convo.user!]!
-        // Show notitfication if conversation has new messages
-        if messageCount > 0 {
-            let notiView = cell.convoNotificationView!
-            cell.numMessagesLabel.text! = "\(messageCount)"
-            notiView.isHidden = false
-            notiView.backgroundColor = UIColor.blue
-            notiView.layer.cornerRadius = notiView.frame.height / 2
-        } else {
-            cell.convoNotificationView.isHidden = true
-        }
+        setLabels(for: cell, at: indexPath.row)
         return cell
     }
     
@@ -155,9 +125,11 @@ class ConversationsViewController: UITableViewController,
             //cell.conversationUserLabel.font = UIFont.systemFont(ofSize: 16)
 //            print("\(cell.textLabel!.text!)")
             //cell.notificationView.alpha = 0.0
+            controller.lastMessageDelegate = self
             controller.recipient = convoToSend.user!
             controller.currentConversation = convoToSend
             numNewMessages[convoToSend.user!] = 0
+            convoToSend.numNewMessages = 0
         }
         
     }
@@ -180,6 +152,40 @@ class ConversationsViewController: UITableViewController,
         
         performSegue(withIdentifier: "addConvo", sender: self)
         
+    }
+    
+    
+    // MARK: - Helper Methods
+    func setLabels(for tableCell: ConversationsCell, at row: Int) {
+        let convo = conversations[row]
+        tableCell.conversationUserLabel.text! = nicknamesDictionary[convo.user!]!
+        tableCell.conversationUserLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        
+        // Setting the label for the last message
+        if let lastMessage = convo.lastMessage {
+            let body = lastMessage.messageBody!
+            tableCell.convoMessageLabel.text! = body
+        } else {
+            tableCell.convoMessageLabel.text! = "(No Messages)"
+        }
+        
+        let imageView = tableCell.convoImageView!
+        imageView.image = UIImage(named:"no-photo")
+        imageView.layer.cornerRadius = imageView.frame.height / 2
+        imageView.clipsToBounds = true
+        
+        //        let messageCount = numNewMessages[convo.user!]!
+        // Show notitfication if conversation has new messages
+        let messageCount = convo.numNewMessages
+        if messageCount > 0 {
+            let notiView = tableCell.convoNotificationView!
+            tableCell.numMessagesLabel.text! = "\(messageCount)"
+            notiView.isHidden = false
+            notiView.backgroundColor = UIColor.blue
+            notiView.layer.cornerRadius = notiView.frame.height / 2
+        } else {
+            tableCell.convoNotificationView.isHidden = true
+        }
     }
     
 
@@ -212,6 +218,7 @@ class ConversationsViewController: UITableViewController,
             for convo in  conversations {
                 convosDictionary[convo.user!] = convo
                 nicknamesDictionary[convo.user!] = convo.nickname!
+                lastMessageDictionary[convo.user!] = convo.lastMessage
                 numNewMessages[convo.user!] = 0
             }
         } catch {
@@ -238,9 +245,12 @@ class ConversationsViewController: UITableViewController,
         convosDictionary[convo.user!] = convo
         nicknamesDictionary[user] = nickname
         numNewMessages[convo.user!] = 0
+        convo.numNewMessages = 0
         saveConversations()
         self.tableView.reloadData()
     }
+    
+
     
     
     
@@ -259,10 +269,27 @@ class ConversationsViewController: UITableViewController,
             for key in snapshotValue.keys {
                 let messageDict : [String:String] = snapshotValue[key]!
                 let curSender = messageDict["Sender"]!
-
+                let text = messageDict["MessageBody"]!
                 if self.convosDictionary[curSender] == nil {
                     self.addConvo(for: curSender, nickname: curSender)
                 }
+                
+                let message = Message(context: self.context)
+                message.messageBody = text
+                message.sender = curSender
+                message.reciever = self.loggedInUser.name!
+                message.parentConversation = self.convosDictionary[curSender]!
+                message.date = "\(Date())"
+                
+                messageDB.removeValue() {
+                    (error, _) in
+                    if error != nil {
+                        print("Error: \(error!)")
+                    }
+                }
+                
+                self.setLastMessage(for: curSender, message: message)
+                self.convosDictionary[curSender]!.numNewMessages += 1
                 
                 print("Messages for: \(curSender)")
                 print("\(self.numNewMessages[curSender]!)")
@@ -272,32 +299,20 @@ class ConversationsViewController: UITableViewController,
             }
             
 //            //print("\(curSender) sent: \(text)")
-//            let message = Message(context: self.context)
-//            message.messageBody = text
-//            message.sender = curSender
-//            message.reciever = self.loggedInUser.name!
-//            message.date = "\(Date())"
-//            if let convo = self.convosDictionary[curSender] {
-//                con
-//            }
-//
-//            self.messageArray.append(message)
-//            self.saveMessages()
 
-            // Dont remove the messages from just the convos view.
-            // Want to keep them until read so we have notifications
-//            messageDB.removeValue() {
-//                (error, _) in
-//                if error != nil {
-//                    print("Error: \(error!)")
-//                }
-//            }
-//
-//            self.configureTableView()
-//
             self.tableView.reloadData()
 
         }
     }
     
+}
+
+extension ConversationsViewController: LastMessageDelegate {
+    func setLastMessage(for user: String, message: Message) {
+        convosDictionary[user]!.lastMessage = message
+        
+        print("\(convosDictionary[user]!.lastMessage!.messageBody!)")
+        saveConversations()
+        tableView.reloadData()
+    }
 }

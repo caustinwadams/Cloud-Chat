@@ -34,8 +34,8 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a test of how long a message can be before it gets cut off" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2JW-nJ-U0a">
-                        <rect key="frame" x="70" y="37.5" width="158" height="47"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <rect key="frame" x="70" y="32.5" width="158" height="50.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -75,7 +75,7 @@
                     <constraint firstAttribute="trailingMargin" secondItem="eN9-J6-9kU" secondAttribute="trailing" constant="-5" id="PCL-wB-CXH"/>
                     <constraint firstItem="2JW-nJ-U0a" firstAttribute="leading" secondItem="eNz-0E-Nzz" secondAttribute="trailing" constant="10" id="XU6-D4-pC9"/>
                     <constraint firstItem="eNz-0E-Nzz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="h4M-DF-OZI"/>
-                    <constraint firstItem="2JW-nJ-U0a" firstAttribute="top" secondItem="mPp-px-Sb0" secondAttribute="bottom" constant="5" id="jgA-Kv-jAY"/>
+                    <constraint firstItem="2JW-nJ-U0a" firstAttribute="top" secondItem="mPp-px-Sb0" secondAttribute="bottom" id="jgA-Kv-jAY"/>
                     <constraint firstAttribute="trailingMargin" secondItem="rCJ-7e-GeP" secondAttribute="trailing" constant="9" id="k9I-po-Faf"/>
                     <constraint firstItem="eN9-J6-9kU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="1" id="o0L-9R-cLk"/>
                     <constraint firstAttribute="trailingMargin" secondItem="2JW-nJ-U0a" secondAttribute="trailing" constant="50" id="pXY-ju-hjD"/>

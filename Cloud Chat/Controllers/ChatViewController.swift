@@ -9,6 +9,10 @@ import Firebase
 import ChameleonFramework
 import CoreData
 
+// MARK: - Protocol for setting the last message for a conversation
+protocol LastMessageDelegate {
+    func setLastMessage(for user: String, message: Message)
+}
 
 class ChatViewController: UIViewController,
                           UITableViewDelegate,
@@ -29,6 +33,7 @@ class ChatViewController: UIViewController,
     let sender : String = (Auth.auth().currentUser?.email)!.components(separatedBy: "@")[0]
     var currentConversation: Conversation!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistantContainer.viewContext
+    var lastMessageDelegate: LastMessageDelegate!
     
     var dbRef : DatabaseReference!
     
@@ -66,6 +71,12 @@ class ChatViewController: UIViewController,
         loadCachedMessages()
         retrieveMessages()
         
+        // Sort the messages by date
+        messageArray.sort() {
+            (message1, message2) in
+            return message1.date! < message2.date!
+        }
+        
         messageTableView.separatorStyle = .none
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
@@ -84,8 +95,9 @@ class ChatViewController: UIViewController,
     func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        
         let messageSender = messageArray[indexPath.row].sender
-    
+        
         if messageSender == sender {
             let cell = tableView.dequeueReusableCell(withIdentifier: "sentMessageCell",
                                                      for: indexPath) as! SentMessageCell
@@ -204,13 +216,8 @@ class ChatViewController: UIViewController,
         messageTextfield.isEnabled = false
         sendButton.isEnabled = false
         
-        //let messageDB = Database.database().reference().child("Messages").child(self.sender).child(recipient)
+
         let messageDB2 = Database.database().reference().child("Messages").child(recipient).child(self.sender)
-        let date = Date()
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: date)
-        let minutes = calendar.component(.minute, from: date)
-        print("Current Time: \(hour):\(minutes)")
         let messageDictionary = ["Sender" : self.sender,
                                  "Reciever" : recipient,
                                  "MessageBody" : messageTextfield.text!,
@@ -228,6 +235,8 @@ class ChatViewController: UIViewController,
                 newMessage.messageBody = messageDictionary["MessageBody"]
                 newMessage.date = messageDictionary["Time"]
                 newMessage.parentConversation = self.currentConversation
+                self.lastMessageDelegate.setLastMessage(for: newMessage.reciever!,
+                                                        message: newMessage)
                 self.messageArray.append(newMessage)
                 self.saveMessages()
                 
@@ -253,13 +262,16 @@ class ChatViewController: UIViewController,
                     let snapshotValue = snapshot.value as! Dictionary<String, String>
                     let text = snapshotValue["MessageBody"]!
                     let curSender = snapshotValue["Sender"]!
+                    let time = snapshotValue["Time"]!
                     //print("\(curSender) sent: \(text)")
                     let message = Message(context: self.context)
                     message.messageBody = text
                     message.sender = curSender
                     message.reciever = self.sender
-                    message.date = "\(Date())"
+                    message.date = time
                     message.parentConversation = self.currentConversation
+                    self.lastMessageDelegate.setLastMessage(for: message.sender!,
+                                                            message: message)
 
                     self.messageArray.append(message)
                     self.saveMessages()
@@ -332,6 +344,15 @@ class ChatViewController: UIViewController,
         self.messageTableView.reloadData()
     }
     
+    
+    
+    
+    func stringToDate() {
+        
+    }
+    
 
 }
+
+
 
