@@ -53,7 +53,7 @@ class ChatViewController: UIViewController,
         messageTableView.delegate = self
         messageTableView.dataSource = self
         
-        
+        self.messageTextfield.keyboardType = UIKeyboardType.default
         //TODO: Set yourself as the delegate of the text field here:
         messageTextfield.delegate = self
         
@@ -87,6 +87,17 @@ class ChatViewController: UIViewController,
         
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        let indexPath = IndexPath(row: messageArray.count - 1, section: 0)
+        messageTableView.scrollToRow(at: indexPath, at: .middle, animated: false)
+    }
+    
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        let indexPath = IndexPath(row: messageArray.count - 1, section: 0)
+//        messageTableView.scrollToRow(at: indexPath, at: .middle, animated: false)
+//    }
 
     ///////////////////////////////////////////
     
@@ -247,7 +258,7 @@ class ChatViewController: UIViewController,
                                                         message: newMessage)
                 self.messageArray.append(newMessage)
                 self.saveMessages()
-                
+                self.viewWillAppear(true)
             } else {
                 print(error2!)
             }
@@ -257,7 +268,7 @@ class ChatViewController: UIViewController,
         self.messageTextfield.isEnabled = true
         self.sendButton.isEnabled = true
         self.messageTextfield.text = ""
-
+        
         
     }
     
@@ -309,7 +320,10 @@ class ChatViewController: UIViewController,
         let curve = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as! Int
         
         UIView.animate(withDuration: duration, delay: 0.0, options: .init(rawValue: UInt(curve)), animations: { self.heightConstraint.constant = 308
-            self.view.layoutIfNeeded()}, completion: nil)
+            self.view.layoutIfNeeded()
+            self.viewWillAppear(true)
+        }, completion: nil)
+        
     }
     
     
