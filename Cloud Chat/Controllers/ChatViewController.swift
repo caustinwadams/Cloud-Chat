@@ -44,7 +44,7 @@ class ChatViewController: UIViewController,
     @objc
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = recipient
+        self.title = currentConversation.nickname!
         //self.navigationItem.title = recipient[1]
         //print(recipient)
 //        recipient[0] = String(describing: recipient[0].split(separator: "@", maxSplits: 1, omittingEmptySubsequences: true)[0])
@@ -89,8 +89,10 @@ class ChatViewController: UIViewController,
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let indexPath = IndexPath(row: messageArray.count - 1, section: 0)
-        messageTableView.scrollToRow(at: indexPath, at: .middle, animated: false)
+        if !messageArray.isEmpty {
+            let indexPath = IndexPath(row: messageArray.count - 1, section: 0)
+            messageTableView.scrollToRow(at: indexPath, at: .middle, animated: false)
+        }
     }
     
     
@@ -117,8 +119,8 @@ class ChatViewController: UIViewController,
                                                      for: indexPath) as! SentMessageCell
             
             cell.messageBody.text = messageArray[indexPath.row].messageBody
-            cell.senderUsername.text = messageArray[indexPath.row].sender == sender ? "Me" : recipient
-            cell.avatarImageView.image = UIImage(named: "egg")
+            //cell.senderUsername.text = messageArray[indexPath.row].sender == sender ? "Me" : recipient
+            cell.avatarImageView.image = UIImage(named: "no-photo")
             
             cell.avatarImageView.layer.borderWidth = 1
             cell.avatarImageView.layer.masksToBounds = false
@@ -127,13 +129,13 @@ class ChatViewController: UIViewController,
             cell.avatarImageView.clipsToBounds = true
 
             
-            if cell.senderUsername.text == "Me" {
-                cell.avatarImageView.backgroundColor = UIColor.flatMint()
-                cell.messageBackground.backgroundColor = UIColor.flatSkyBlue()
-            } else {
-                cell.avatarImageView.backgroundColor = UIColor.flatWatermelon()
-                cell.messageBackground.backgroundColor = UIColor.flatGray()
-            }
+//            if messageArray[indexPath.row].sender! == currentConversation.parentUser!.name! {
+            cell.avatarImageView.backgroundColor = UIColor.flatMint()
+            cell.messageBackground.backgroundColor = UIColor.flatSkyBlue()
+//            } else {
+//            cell.avatarImageView.backgroundColor = UIColor.flatWatermelon()
+//            cell.messageBackground.backgroundColor = UIColor.flatGray()
+            //}
             cell.isUserInteractionEnabled = false
             return cell
         } else {
@@ -142,8 +144,8 @@ class ChatViewController: UIViewController,
                                                      for: indexPath) as! CustomMessageCell
             
             cell.messageBody.text = messageArray[indexPath.row].messageBody
-            cell.senderUsername.text = messageArray[indexPath.row].sender == sender ? "Me" : recipient
-            cell.avatarImageView.image = UIImage(named: "egg")
+            //cell.senderUsername.text = messageArray[indexPath.row].sender == sender ? "Me" : recipient
+            cell.avatarImageView.image = UIImage(named: "no-photo")
             
             cell.avatarImageView.layer.borderWidth = 1
             cell.avatarImageView.layer.masksToBounds = false
@@ -151,13 +153,13 @@ class ChatViewController: UIViewController,
             cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.height/2
             cell.avatarImageView.clipsToBounds = true
             
-            if cell.senderUsername.text == "Me" {
-                cell.avatarImageView.backgroundColor = UIColor.flatMint()
-                cell.messageBackground.backgroundColor = UIColor.flatSkyBlue()
-            } else {
-                cell.avatarImageView.backgroundColor = UIColor.flatWatermelon()
-                cell.messageBackground.backgroundColor = UIColor.flatGray()
-            }
+//            if cell.senderUsername.text == "Me" {
+            //cell.avatarImageView.backgroundColor = UIColor.flatMint()
+            //cell.messageBackground.backgroundColor = UIColor.flatSkyBlue()
+            //} else {
+            cell.avatarImageView.backgroundColor = UIColor.flatWatermelon()
+            cell.messageBackground.backgroundColor = UIColor.flatGray()
+           // }
             
             cell.isUserInteractionEnabled = false
         
@@ -190,36 +192,6 @@ class ChatViewController: UIViewController,
         messageTableView.estimatedRowHeight = 120
     }
     
-    
-    ///////////////////////////////////////////
-    
-    //MARK:- TextField Delegate Methods
-
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-//
-//
-//
-//        let duration = aNotification.userInfo.objectForKey(UIKeyboardAnimationDurationUserInfoKey) as NSNumber
-//        let curve = aNotification.userInfo.objectForKey(UIKeyboardAnimationCurveUserInfoKey) as NSNumber
-        //let duration = UIKeyboardAnimationDurationUserInfoKey as! Double
-        //let curve = UserInfo.UIKeyboardAnimationCurveUserInfoKey
-        
-        
-        
-    }
-    
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-//        UIView.animate(withDuration: 0.3) {
-//            self.heightConstraint.constant = 50
-//            self.view.layoutIfNeeded()
-//        }
-    }
-
-    
-    ///////////////////////////////////////////
     
     
     //MARK: - Send & Recieve from Firebase
@@ -321,7 +293,9 @@ class ChatViewController: UIViewController,
         
         UIView.animate(withDuration: duration, delay: 0.0, options: .init(rawValue: UInt(curve)), animations: { self.heightConstraint.constant = 308
             self.view.layoutIfNeeded()
-            self.viewWillAppear(true)
+            if !self.messageArray.isEmpty {
+                self.viewWillAppear(true)
+            }
         }, completion: nil)
         
     }

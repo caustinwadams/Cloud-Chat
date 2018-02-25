@@ -189,7 +189,11 @@ class ConversationsViewController: UITableViewController {
             let notiView = tableCell.convoNotificationView!
             tableCell.numMessagesLabel.text! = "\(messageCount)"
             notiView.isHidden = false
-            notiView.backgroundColor = UIColor.blue
+            notiView.backgroundColor = UIColor.flatSkyBlue()
+//            UIColor.init(red: 121.0 / 255.0,
+//                         green: 210.0 / 255.0,
+//                         blue: 245.0 / 255.0,
+//                         alpha: 1)
             notiView.layer.cornerRadius = notiView.frame.height / 2
         } else {
             tableCell.convoNotificationView.isHidden = true
