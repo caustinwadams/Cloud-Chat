@@ -45,24 +45,19 @@ class ChatViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = currentConversation.nickname!
-        //self.navigationItem.title = recipient[1]
-        //print(recipient)
-//        recipient[0] = String(describing: recipient[0].split(separator: "@", maxSplits: 1, omittingEmptySubsequences: true)[0])
         
-        //TODO: Set yourself as the delegate and datasource here:
+        // Delegate and datasource here
         messageTableView.delegate = self
         messageTableView.dataSource = self
         
         self.messageTextfield.keyboardType = UIKeyboardType.default
-        //TODO: Set yourself as the delegate of the text field here:
+        // Delegate of the text field here
         messageTextfield.delegate = self
-        
-        
-        //TODO: Set the tapGesture here:
+
          let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tableViewTapped))
          messageTableView.addGestureRecognizer(tapGesture)
 
-        //TODO: Register your MessageCell.xib file here:
+        // Registering the custom message cells
         messageTableView.register(UINib(nibName: "MessageCell",
                                         bundle: nil),
                                   forCellReuseIdentifier: "recievedMessageCell")
@@ -82,9 +77,11 @@ class ChatViewController: UIViewController,
         
         messageTableView.separatorStyle = .none
         
+        // set up the cusom notification functions
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(textChanged), name: .UITextFieldTextDidChange, object: nil)
+        sendButton.isEnabled = false
         
     }
     
@@ -95,18 +92,11 @@ class ChatViewController: UIViewController,
         }
     }
     
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        let indexPath = IndexPath(row: messageArray.count - 1, section: 0)
-//        messageTableView.scrollToRow(at: indexPath, at: .middle, animated: false)
-//    }
 
     ///////////////////////////////////////////
     
     //MARK: - TableView DataSource Methods
-    var i = 0
-    
-    
+
     @objc
     func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -172,21 +162,18 @@ class ChatViewController: UIViewController,
     
     
     
-    //TODO: Declare numberOfRowsInSection here:
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
         return messageArray.count
     }
     
     
-    //TODO: Declare tableViewTapped here:
     @objc func tableViewTapped() {
         messageTextfield.endEditing(true)
     }
    
     
     
-    //TODO: Declare configureTableView here:
     func configureTableView() {
         messageTableView.rowHeight = UITableViewAutomaticDimension
         messageTableView.estimatedRowHeight = 120
@@ -238,9 +225,8 @@ class ChatViewController: UIViewController,
                 
                 
         self.messageTextfield.isEnabled = true
-        self.sendButton.isEnabled = true
+        self.sendButton.isEnabled = false
         self.messageTextfield.text = ""
-        
         
     }
     
@@ -285,8 +271,19 @@ class ChatViewController: UIViewController,
         }
     }
     
+
     
-    // MARK: - TextField / Keyboard Animation Methods
+    // MARK: - TextField / Keyboard Methods
+    @objc
+    func textChanged() {
+        var enabled = false
+        if !messageTextfield.text!.isEmpty {
+            enabled = true
+        }
+        sendButton.isEnabled = enabled
+    }
+    
+    
     @objc func keyboardWillShow(notification: NSNotification) {
         let duration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as! Double
         let curve = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as! Int

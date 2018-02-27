@@ -50,23 +50,29 @@
                                     <segue destination="qQg-wA-Esh" kind="push" identifier="goToRegistration" id="1Yf-oM-MEQ"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="POv-WA-vtj">
-                                <rect key="frame" x="83" y="427" width="237" height="133"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="POv-WA-vtj">
+                                <rect key="frame" x="83" y="427" width="237" height="131"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UEj-EI-KDM">
-                                <rect key="frame" x="0.0" y="465" width="176" height="95"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UEj-EI-KDM">
+                                <rect key="frame" x="0.0" y="465" width="176" height="93"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.47512478299999999" green="0.82530094720000002" blue="0.96017795139999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="rV4-Sa-2Rb" firstAttribute="bottom" secondItem="uWY-w2-6La" secondAttribute="top" constant="-10" id="1cv-Bu-g2K"/>
                             <constraint firstAttribute="trailing" secondItem="rV4-Sa-2Rb" secondAttribute="trailing" constant="40" id="6x0-yA-ofE"/>
+                            <constraint firstItem="UEj-EI-KDM" firstAttribute="leading" secondItem="9g1-SA-C5Y" secondAttribute="leading" id="7Os-pP-j0r"/>
                             <constraint firstAttribute="trailing" secondItem="uWY-w2-6La" secondAttribute="trailing" constant="40" id="CAj-Ps-fV4"/>
+                            <constraint firstItem="UEj-EI-KDM" firstAttribute="top" secondItem="uWY-w2-6La" secondAttribute="bottom" constant="77" id="Gsg-F3-kqR"/>
+                            <constraint firstItem="POv-WA-vtj" firstAttribute="top" secondItem="uWY-w2-6La" secondAttribute="bottom" constant="39" id="PyB-bh-o1q"/>
                             <constraint firstItem="9mT-Oj-xlJ" firstAttribute="top" secondItem="uWY-w2-6La" secondAttribute="bottom" constant="180" id="RCs-FN-g8d"/>
                             <constraint firstItem="uWY-w2-6La" firstAttribute="leading" secondItem="9g1-SA-C5Y" secondAttribute="leading" constant="40" id="X4I-Wn-xdH"/>
+                            <constraint firstAttribute="trailing" secondItem="POv-WA-vtj" secondAttribute="trailing" id="XO4-Tc-7i9"/>
                             <constraint firstItem="rV4-Sa-2Rb" firstAttribute="leading" secondItem="9g1-SA-C5Y" secondAttribute="leading" constant="40" id="d0O-ga-r05"/>
+                            <constraint firstItem="9mT-Oj-xlJ" firstAttribute="top" secondItem="UEj-EI-KDM" secondAttribute="bottom" constant="10" id="d68-TV-WeX"/>
+                            <constraint firstAttribute="trailing" secondItem="UEj-EI-KDM" secondAttribute="trailing" constant="144" id="loo-7P-sw2"/>
+                            <constraint firstItem="UEj-EI-KDM" firstAttribute="bottom" secondItem="POv-WA-vtj" secondAttribute="bottom" id="n40-yf-erE"/>
+                            <constraint firstItem="POv-WA-vtj" firstAttribute="leading" secondItem="9g1-SA-C5Y" secondAttribute="leadingMargin" constant="67" id="sdd-vz-zRe"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Cloud Chat" id="qIL-hP-GCy"/>
@@ -227,7 +233,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kN3-4A-zVl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1490" y="-70"/>
+            <point key="canvasLocation" x="1194" y="12"/>
         </scene>
         <!--Add Convo View Controller-->
         <scene sceneID="Jnm-gl-LEt">
@@ -302,7 +308,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pj7-7T-lz5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2020" y="-1031"/>
+            <point key="canvasLocation" x="1714" y="-463"/>
         </scene>
         <!--Log In-->
         <scene sceneID="Ku8-Lc-W7f">
@@ -465,7 +471,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2331" y="-71"/>
+            <point key="canvasLocation" x="1714" y="409"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kGX-IT-aXC">
