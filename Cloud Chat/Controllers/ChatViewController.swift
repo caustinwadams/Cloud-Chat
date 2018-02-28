@@ -167,95 +167,6 @@ class ChatViewController: UIViewController,
         messageTableView.estimatedRowHeight = 120
     }
     
-    
-    
-    //MARK: - Send & Recieve from Firebase
-
-    @IBAction func sendPressed(_ sender: AnyObject) {
-        
-        messageTextfield.endEditing(true)
-        messageTextfield.isEnabled = false
-        sendButton.isEnabled = false
-        
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let dateString = dateFormatter.string(from: date)
-        
-        let messageDB2 = Database.database().reference().child("Messages").child(recipient).child(self.sender)
-        let messageDictionary = ["Sender" : self.sender,
-                                 "Reciever" : recipient,
-                                 "MessageBody" : messageTextfield.text!,
-                                 "Time" : dateString]
-        
-
-        messageDB2.childByAutoId().setValue(messageDictionary) {
-            (error2, reference2) in
-            if error2 == nil {
-                self.messageTextfield.text = ""
-                
-                let newMessage = Message(context: self.context)
-                newMessage.sender = messageDictionary["Sender"]
-                newMessage.reciever = messageDictionary["Reciever"]
-                newMessage.messageBody = messageDictionary["MessageBody"]
-                newMessage.date = messageDictionary["Time"]
-                newMessage.parentConversation = self.currentConversation
-                self.lastMessageDelegate.setLastMessage(for: newMessage.reciever!,
-                                                        message: newMessage)
-                self.messageArray.append(newMessage)
-                self.saveMessages()
-                self.viewWillAppear(true)
-            } else {
-                print(error2!)
-            }
-        }
-                
-                
-        self.messageTextfield.isEnabled = true
-        self.setSendButton(isEnabled: false)
-        self.messageTextfield.text = ""
-        
-    }
-    
-    
-    func retrieveMessages() {
-        
-        let messageDB = Database.database().reference().child("Messages").child(self.sender).child(recipient)
-        messageDB.observe(.childAdded) {
-            (snapshot) in
-
-                let snapshotValue = snapshot.value as! Dictionary<String, String>
-                let text = snapshotValue["MessageBody"]!
-                let curSender = snapshotValue["Sender"]!
-                let time = snapshotValue["Time"]!
-                let message = Message(context: self.context)
-                message.messageBody = text
-                message.sender = curSender
-                message.reciever = self.sender
-                message.date = time
-                message.parentConversation = self.currentConversation
-                self.lastMessageDelegate.setLastMessage(for: message.sender!,
-                                                        message: message)
-                self.lastMessageDelegate.clearNewMessages(for: message.sender!)
-                self.messageArray.append(message)
-                self.saveMessages()
-
-
-                messageDB.removeValue() {
-                    (error, _) in
-                    if error != nil {
-                        print("Error: \(error!)")
-                    }
-                }
-
-                self.configureTableView()
-
-                self.messageTableView.reloadData()
-            
-
-        }
-    }
-    
 
     
     // MARK: - TextField / Keyboard Methods
@@ -300,8 +211,118 @@ class ChatViewController: UIViewController,
         let duration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as! Double
         let curve = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as! Int
         
-        UIView.animate(withDuration: duration, delay: 0.0, options: .init(rawValue: UInt(curve)), animations: { self.heightConstraint.constant = 50
-            self.view.layoutIfNeeded()}, completion: nil)
+        UIView.animate(withDuration: duration, delay: 0.0, options: .init(rawValue: UInt(curve)), animations: {
+            self.heightConstraint.constant = 50
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.returnKeyType == UIReturnKeyType.send &&
+           !textField.text!.isEmpty {
+            sendPressed(self)
+        }
+        return true
+    }
+    
+    
+    //MARK: - Send & Recieve from Firebase
+    
+    @IBAction func sendPressed(_ sender: AnyObject) {
+        
+        messageTextfield.endEditing(true)
+        messageTextfield.isEnabled = false
+        sendButton.isEnabled = false
+        
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateString = dateFormatter.string(from: date)
+        
+        let messageDB2 = Database.database().reference().child("Messages").child(recipient).child(self.sender)
+        let messageDictionary = ["Sender" : self.sender,
+                                 "Reciever" : recipient,
+                                 "MessageBody" : messageTextfield.text!,
+                                 "Time" : dateString]
+        
+        
+        messageDB2.childByAutoId().setValue(messageDictionary) {
+            (error2, reference2) in
+            if error2 == nil {
+                self.messageTextfield.text = ""
+                
+                self.createNewMessage(msgText:     messageDictionary["MessageBody"]!,
+                                      msgSender:   messageDictionary["Sender"]!,
+                                      msgReciever: messageDictionary["Reciever"]!,
+                                      msgTime:     messageDictionary["Time"]!,
+                                      recieving:   false)
+                self.viewWillAppear(true)
+            } else {
+                print(error2!)
+            }
+        }
+        
+        
+        self.messageTextfield.isEnabled = true
+        self.setSendButton(isEnabled: false)
+        self.messageTextfield.text = ""
+        
+    }
+    
+    
+    func retrieveMessages() {
+        
+        let messageDB = Database.database().reference().child("Messages").child(self.sender).child(recipient)
+        messageDB.observe(.childAdded) {
+            (snapshot) in
+            
+            let snapshotValue = snapshot.value as! Dictionary<String, String>
+            let text = snapshotValue["MessageBody"]!
+            let curSender = snapshotValue["Sender"]!
+            let time = snapshotValue["Time"]!
+            
+            self.createNewMessage(msgText: text,
+                                  msgSender: curSender,
+                                  msgReciever: self.sender,
+                                  msgTime: time,
+                                  recieving: true)
+            
+            messageDB.removeValue() {
+                (error, _) in
+                if error != nil {
+                    print("Error: \(error!)")
+                }
+            }
+            
+            self.configureTableView()
+            
+            self.messageTableView.reloadData()
+            
+            
+        }
+    }
+    
+    
+    
+    // Creates a new Message instance and saves it to the context
+    func createNewMessage(msgText    : String,
+                          msgSender  : String,
+                          msgReciever: String,
+                          msgTime    : String,
+                          recieving: Bool) {
+        let message = Message(context: self.context)
+        message.messageBody = msgText
+        message.sender = msgSender
+        message.reciever = msgReciever
+        message.date = msgTime
+        message.parentConversation = self.currentConversation
+        let lastMessageUser = recieving ? message.sender! : message.reciever!
+        self.lastMessageDelegate.setLastMessage(for: lastMessageUser,
+                                                message: message)
+        self.lastMessageDelegate.clearNewMessages(for: lastMessageUser)
+        self.messageArray.append(message)
+        self.saveMessages()
     }
     
     
