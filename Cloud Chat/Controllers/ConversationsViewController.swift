@@ -33,7 +33,6 @@ class ConversationsViewController: UITableViewController {
         tableView.register(UINib(nibName: "ConversationsCell",
                                         bundle: nil),
                                   forCellReuseIdentifier: "convoCell")
-        print("These are the conversations for \(loggedInUser.name!)")
         retrieveMessages()
         loadConversations()
     }
@@ -99,13 +98,7 @@ class ConversationsViewController: UITableViewController {
         }
         else if (segue.identifier == "goToChat") {
             let controller = segue.destination as! ChatViewController
-            //print(sender as! String)
             let (convoToSend, _) = sender as! (Conversation, IndexPath)
-            // TODO: This may need to change because it may affect many cells
-            //let cell = tableView(self.tableView, cellForRowAt: path) as! ConversationsCell
-            //cell.conversationUserLabel.font = UIFont.systemFont(ofSize: 16)
-//            print("\(cell.textLabel!.text!)")
-            //cell.notificationView.alpha = 0.0
             controller.lastMessageDelegate = self
             controller.recipient = convoToSend.user!
             controller.currentConversation = convoToSend
@@ -146,8 +139,6 @@ class ConversationsViewController: UITableViewController {
         
         // Setting the label for the last message
         if let lastMessage = convo.lastMessage {
-//            print(lastMessage.date!)
-//            print("CONVERTED TO: \(stringToDate(for: lastMessage.date!))")
             var timeString = lastMessage.date!.split(separator: " ", maxSplits: 2, omittingEmptySubsequences: true)
             let timeArr = timeString[1].split(separator: ":", maxSplits: 2, omittingEmptySubsequences: true)
             var timeInt = Int(timeArr[0])!
@@ -167,9 +158,7 @@ class ConversationsViewController: UITableViewController {
             
             let realTime = "\(timeInt):\(timeArr[1]) \(timeString[2])"
             tableCell.convoTimeLabel.text = realTime
-            print(realTime)
-            
-            //print(timeString)
+
             let body = lastMessage.messageBody!
             tableCell.convoMessageLabel.text! = body
         } else {
@@ -202,7 +191,6 @@ class ConversationsViewController: UITableViewController {
     
     
     func stringToDate(for str: String) -> Date {
-        print(str)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let date = dateFormatter.date(from: str)
@@ -273,7 +261,6 @@ class ConversationsViewController: UITableViewController {
         messageDB.observe(.childAdded) {
             (snapshot) in
             if !self.userInChat {
-                print("Message Added in Convos")
                 let snapshotValue = snapshot.value as! Dictionary<String,Dictionary<String,String>>
                 
                 for key in snapshotValue.keys {
@@ -302,10 +289,7 @@ class ConversationsViewController: UITableViewController {
                     self.setLastMessage(for: curSender, message: message)
                     self.convosDictionary[curSender]!.numNewMessages += 1
                     
-                    print("Messages for: \(curSender)")
-                    print("\(self.numNewMessages[curSender]!)")
                     self.numNewMessages[curSender]! += 1
-                    print("\(self.numNewMessages[curSender]!)")
                     
                 }
                 self.tableView.reloadData()
@@ -321,7 +305,6 @@ extension ConversationsViewController: LastMessageDelegate {
     func setLastMessage(for user: String, message: Message) {
         convosDictionary[user]!.lastMessage = message
         
-        print("\(convosDictionary[user]!.lastMessage!.messageBody!)")
         saveConversations()
         tableView.reloadData()
     }

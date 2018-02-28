@@ -81,7 +81,8 @@ class ChatViewController: UIViewController,
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(textChanged), name: .UITextFieldTextDidChange, object: nil)
-        sendButton.isEnabled = false
+        sendButton.layer.cornerRadius = sendButton.frame.height / 2
+        setSendButton(isEnabled: false)
         
     }
     
@@ -109,7 +110,6 @@ class ChatViewController: UIViewController,
                                                      for: indexPath) as! SentMessageCell
             
             cell.messageBody.text = messageArray[indexPath.row].messageBody
-            //cell.senderUsername.text = messageArray[indexPath.row].sender == sender ? "Me" : recipient
             cell.avatarImageView.image = UIImage(named: "no-photo")
             
             cell.avatarImageView.layer.borderWidth = 1
@@ -118,14 +118,8 @@ class ChatViewController: UIViewController,
             cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.height/2
             cell.avatarImageView.clipsToBounds = true
 
-            
-//            if messageArray[indexPath.row].sender! == currentConversation.parentUser!.name! {
             cell.avatarImageView.backgroundColor = UIColor.flatMint()
             cell.messageBackground.backgroundColor = UIColor.flatSkyBlue()
-//            } else {
-//            cell.avatarImageView.backgroundColor = UIColor.flatWatermelon()
-//            cell.messageBackground.backgroundColor = UIColor.flatGray()
-            //}
             cell.isUserInteractionEnabled = false
             return cell
         } else {
@@ -134,7 +128,6 @@ class ChatViewController: UIViewController,
                                                      for: indexPath) as! CustomMessageCell
             
             cell.messageBody.text = messageArray[indexPath.row].messageBody
-            //cell.senderUsername.text = messageArray[indexPath.row].sender == sender ? "Me" : recipient
             cell.avatarImageView.image = UIImage(named: "no-photo")
             
             cell.avatarImageView.layer.borderWidth = 1
@@ -143,13 +136,8 @@ class ChatViewController: UIViewController,
             cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.height/2
             cell.avatarImageView.clipsToBounds = true
             
-//            if cell.senderUsername.text == "Me" {
-            //cell.avatarImageView.backgroundColor = UIColor.flatMint()
-            //cell.messageBackground.backgroundColor = UIColor.flatSkyBlue()
-            //} else {
             cell.avatarImageView.backgroundColor = UIColor.flatWatermelon()
             cell.messageBackground.backgroundColor = UIColor.flatGray()
-           // }
             
             cell.isUserInteractionEnabled = false
         
@@ -193,7 +181,6 @@ class ChatViewController: UIViewController,
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateString = dateFormatter.string(from: date)
-        print(dateString)
         
         let messageDB2 = Database.database().reference().child("Messages").child(recipient).child(self.sender)
         let messageDictionary = ["Sender" : self.sender,
@@ -225,7 +212,7 @@ class ChatViewController: UIViewController,
                 
                 
         self.messageTextfield.isEnabled = true
-        self.sendButton.isEnabled = false
+        self.setSendButton(isEnabled: false)
         self.messageTextfield.text = ""
         
     }
@@ -236,13 +223,11 @@ class ChatViewController: UIViewController,
         let messageDB = Database.database().reference().child("Messages").child(self.sender).child(recipient)
         messageDB.observe(.childAdded) {
             (snapshot) in
-            
-                print("Message added in CHATS")
+
                 let snapshotValue = snapshot.value as! Dictionary<String, String>
                 let text = snapshotValue["MessageBody"]!
                 let curSender = snapshotValue["Sender"]!
                 let time = snapshotValue["Time"]!
-                //print("\(curSender) sent: \(text)")
                 let message = Message(context: self.context)
                 message.messageBody = text
                 message.sender = curSender
@@ -280,7 +265,20 @@ class ChatViewController: UIViewController,
         if !messageTextfield.text!.isEmpty {
             enabled = true
         }
-        sendButton.isEnabled = enabled
+        setSendButton(isEnabled: enabled)
+    }
+    
+    
+    func setSendButton(isEnabled: Bool) {
+        var textColor = UIColor.lightGray
+        var bgColor = UIColor.flatBlueColorDark()
+        sendButton.isEnabled = isEnabled
+        if sendButton.isEnabled {
+            textColor = UIColor.white
+            bgColor = UIColor.flatSkyBlue()
+        }
+        sendButton.setTitleColor(textColor, for: .normal)
+        sendButton.backgroundColor = bgColor
     }
     
     
