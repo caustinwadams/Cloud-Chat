@@ -111,13 +111,33 @@ class ConversationsViewController: UITableViewController {
  
     @IBAction func logoutPressed(_ sender: UIBarButtonItem) {
         
-        do {
-            try Auth.auth().signOut()
-            navigationController?.popToRootViewController(animated: true)
+        
+        let alert = UIAlertController(title: "", message: "Are you sure you want to logout?", preferredStyle: .actionSheet)
+        
+        let logoutAction = UIAlertAction(title: "Logout",
+                                   style: .destructive) {
+            (action) in
+                do {
+                    try Auth.auth().signOut()
+                    self.navigationController?.popToRootViewController(animated: true)
+                }
+                catch  {
+                    print("Error signing out")
+                }
         }
-        catch  {
-            print("Error signing out")
+        
+        
+        let cancelAction = UIAlertAction(title: "Cancel",
+                                         style: .cancel) {
+            (action) in
+                alert.dismiss(animated: true, completion: nil)
         }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(logoutAction)
+        
+        
+        present(alert, animated: true, completion: nil)
         
     }
     

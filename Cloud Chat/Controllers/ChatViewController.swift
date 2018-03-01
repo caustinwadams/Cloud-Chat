@@ -1,8 +1,6 @@
 //
 //  ViewController.swift
-//  Flash Chat
 //
-
 
 import UIKit
 import Firebase
@@ -37,9 +35,7 @@ class ChatViewController: UIViewController,
     var lastMessageDelegate: LastMessageDelegate!
     
     var dbRef : DatabaseReference!
-    
 
-    
     // MARK: - Load Methods
     @objc
     override func viewDidLoad() {
@@ -94,8 +90,7 @@ class ChatViewController: UIViewController,
     }
     
 
-    ///////////////////////////////////////////
-    
+    //////////////////////////////////////
     //MARK: - TableView DataSource Methods
 
     @objc
@@ -104,7 +99,6 @@ class ChatViewController: UIViewController,
         
         
         let messageSender = messageArray[indexPath.row].sender
-        
         if messageSender == sender {
             let cell = tableView.dequeueReusableCell(withIdentifier: "sentMessageCell",
                                                      for: indexPath) as! SentMessageCell
@@ -118,7 +112,6 @@ class ChatViewController: UIViewController,
             cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.height/2
             cell.avatarImageView.clipsToBounds = true
 
-            cell.avatarImageView.backgroundColor = UIColor.flatMint()
             cell.messageBackground.backgroundColor = UIColor.flatSkyBlue()
             cell.isUserInteractionEnabled = false
             return cell
@@ -136,19 +129,14 @@ class ChatViewController: UIViewController,
             cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.height/2
             cell.avatarImageView.clipsToBounds = true
             
-            cell.avatarImageView.backgroundColor = UIColor.flatWatermelon()
             cell.messageBackground.backgroundColor = UIColor.flatGray()
             
             cell.isUserInteractionEnabled = false
         
-        return cell
+            return cell
         }
-    
-
-       
     }
-    
-    
+
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
@@ -161,13 +149,11 @@ class ChatViewController: UIViewController,
     }
    
     
-    
     func configureTableView() {
         messageTableView.rowHeight = UITableViewAutomaticDimension
         messageTableView.estimatedRowHeight = 120
     }
     
-
     
     // MARK: - TextField / Keyboard Methods
     @objc
@@ -228,7 +214,6 @@ class ChatViewController: UIViewController,
     
     
     //MARK: - Send & Recieve from Firebase
-    
     @IBAction func sendPressed(_ sender: AnyObject) {
         
         messageTextfield.endEditing(true)
@@ -241,33 +226,30 @@ class ChatViewController: UIViewController,
         let dateString = dateFormatter.string(from: date)
         
         let messageDB2 = Database.database().reference().child("Messages").child(recipient).child(self.sender)
-        let messageDictionary = ["Sender" : self.sender,
-                                 "Reciever" : recipient,
+        let messageDictionary = ["Sender"      : self.sender,
+                                 "Reciever"    : recipient,
                                  "MessageBody" : messageTextfield.text!,
-                                 "Time" : dateString]
+                                 "Time"        : dateString]
         
         
         messageDB2.childByAutoId().setValue(messageDictionary) {
             (error2, reference2) in
             if error2 == nil {
                 self.messageTextfield.text = ""
-                
-                self.createNewMessage(msgText:     messageDictionary["MessageBody"]!,
-                                      msgSender:   messageDictionary["Sender"]!,
-                                      msgReciever: messageDictionary["Reciever"]!,
-                                      msgTime:     messageDictionary["Time"]!,
-                                      recieving:   false)
+                self.createNewMessage(msgText     : messageDictionary["MessageBody"]!,
+                                      msgSender   : messageDictionary["Sender"]!,
+                                      msgReciever : messageDictionary["Reciever"]!,
+                                      msgTime     : messageDictionary["Time"]!,
+                                      recieving   : false)
                 self.viewWillAppear(true)
             } else {
                 print(error2!)
             }
         }
         
-        
         self.messageTextfield.isEnabled = true
         self.setSendButton(isEnabled: false)
         self.messageTextfield.text = ""
-        
     }
     
     
@@ -282,11 +264,11 @@ class ChatViewController: UIViewController,
             let curSender = snapshotValue["Sender"]!
             let time = snapshotValue["Time"]!
             
-            self.createNewMessage(msgText: text,
-                                  msgSender: curSender,
-                                  msgReciever: self.sender,
-                                  msgTime: time,
-                                  recieving: true)
+            self.createNewMessage(msgText     : text,
+                                  msgSender   : curSender,
+                                  msgReciever : self.sender,
+                                  msgTime     : time,
+                                  recieving   : true)
             
             messageDB.removeValue() {
                 (error, _) in
@@ -303,14 +285,12 @@ class ChatViewController: UIViewController,
         }
     }
     
-    
-    
     // Creates a new Message instance and saves it to the context
     func createNewMessage(msgText    : String,
                           msgSender  : String,
                           msgReciever: String,
                           msgTime    : String,
-                          recieving: Bool) {
+                          recieving  : Bool) {
         let message = Message(context: self.context)
         message.messageBody = msgText
         message.sender = msgSender
@@ -359,10 +339,4 @@ class ChatViewController: UIViewController,
         self.messageTableView.reloadData()
     }
     
-    
-    
-
 }
-
-
-
