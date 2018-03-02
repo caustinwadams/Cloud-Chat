@@ -90,51 +90,38 @@ class ChatViewController: UIViewController,
     }
     
 
+    func createCell(for tableView: UITableView, at indexPath: IndexPath, withIdentifier reuseIdentifier: String) -> SendRecieveCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier,
+                                                 for: indexPath) as! SendRecieveCell
+        
+        cell = reuseIdentifier == "sentMessageCell" ? cell as! SentMessageCell : cell as! CustomMessageCell
+        
+        cell.msgBody!.text = messageArray[indexPath.row].messageBody
+        cell.msgImageView!.image = UIImage(named: "no-photo")
+        cell.msgImageView!.layer.borderWidth = 1
+        cell.msgImageView!.layer.masksToBounds = false
+        cell.msgImageView!.layer.borderColor = UIColor.black.cgColor
+        cell.msgImageView!.layer.cornerRadius = cell.msgImageView!.frame.height/2
+        cell.msgImageView!.clipsToBounds = true
+        
+        cell.msgBackground!.backgroundColor = cell.color
+        cell.isUserInteractionEnabled = false
+        return cell
+    }
     //////////////////////////////////////
     //MARK: - TableView DataSource Methods
 
     @objc
     func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
         let messageSender = messageArray[indexPath.row].sender
+        var reuseIdentifier: String
         if messageSender == sender {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "sentMessageCell",
-                                                     for: indexPath) as! SentMessageCell
-            
-            cell.messageBody.text = messageArray[indexPath.row].messageBody
-            cell.avatarImageView.image = UIImage(named: "no-photo")
-            
-            cell.avatarImageView.layer.borderWidth = 1
-            cell.avatarImageView.layer.masksToBounds = false
-            cell.avatarImageView.layer.borderColor = UIColor.black.cgColor
-            cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.height/2
-            cell.avatarImageView.clipsToBounds = true
-
-            cell.messageBackground.backgroundColor = UIColor.flatSkyBlue()
-            cell.isUserInteractionEnabled = false
-            return cell
+            reuseIdentifier = "sentMessageCell"
         } else {
-        
-            let cell = tableView.dequeueReusableCell(withIdentifier: "recievedMessageCell",
-                                                     for: indexPath) as! CustomMessageCell
-            
-            cell.messageBody.text = messageArray[indexPath.row].messageBody
-            cell.avatarImageView.image = UIImage(named: "no-photo")
-            
-            cell.avatarImageView.layer.borderWidth = 1
-            cell.avatarImageView.layer.masksToBounds = false
-            cell.avatarImageView.layer.borderColor = UIColor.black.cgColor
-            cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.height/2
-            cell.avatarImageView.clipsToBounds = true
-            
-            cell.messageBackground.backgroundColor = UIColor.flatGray()
-            
-            cell.isUserInteractionEnabled = false
-        
-            return cell
+            reuseIdentifier = "recievedMessageCell"
         }
+        return createCell(for: tableView, at: indexPath, withIdentifier: reuseIdentifier)
     }
 
     

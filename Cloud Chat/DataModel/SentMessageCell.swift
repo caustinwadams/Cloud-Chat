@@ -17,11 +17,18 @@ class SentMessageCell: SendRecieveCell {
     @IBOutlet weak var senderUsername: UILabel!
     
     
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        self.msgImageView = avatarImageView
+        self.msgBackground = messageBackground
+        self.msgUsername = senderUsername
+        self.msgBody = messageBody
+        self.color = UIColor.flatSkyBlue()
     }
 
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

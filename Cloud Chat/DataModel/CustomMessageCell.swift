@@ -19,10 +19,11 @@ class CustomMessageCell: SendRecieveCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code goes here
-        
-        
-        
+        self.msgImageView = avatarImageView
+        self.msgBackground = messageBackground
+        self.msgUsername = senderUsername
+        self.msgBody = messageBody
+        self.color = UIColor.flatGray()
     }
 
 

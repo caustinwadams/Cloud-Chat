@@ -9,10 +9,11 @@ import UIKit
 
 class SendRecieveCell: UITableViewCell {
 
-    weak var msgBackground: UIView!
-    weak var msgImageView: UIImageView!
-    weak var msgUsername: UILabel!
-    weak var msgBody: UILabel!
+    @IBOutlet weak var msgBackground = UIView()
+    @IBOutlet weak var msgImageView = UIImageView()
+    @IBOutlet weak var msgUsername = UILabel()
+    @IBOutlet weak var msgBody = UILabel()
+    var color : UIColor = UIColor()
     
     override func awakeFromNib() {
         super.awakeFromNib()
