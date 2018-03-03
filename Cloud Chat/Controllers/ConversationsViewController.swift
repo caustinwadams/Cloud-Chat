@@ -35,6 +35,16 @@ class ConversationsViewController: UITableViewController {
                                   forCellReuseIdentifier: "convoCell")
         retrieveMessages()
         loadConversations()
+        // Sorting conversations by the newest ones
+        conversations.sort() {
+            (convo1, convo2) in
+            if convo1.lastMessage == nil {
+                return false
+            } else if convo2.lastMessage == nil {
+                return true
+            }
+            return convo1.lastMessage!.date! > convo2.lastMessage!.date!
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

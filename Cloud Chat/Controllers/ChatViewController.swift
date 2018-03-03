@@ -57,7 +57,8 @@ class ChatViewController: UIViewController,
         messageTableView.register(UINib(nibName: "MessageCell",
                                         bundle: nil),
                                   forCellReuseIdentifier: "recievedMessageCell")
-        messageTableView.register(UINib(nibName: "SentCell", bundle: nil),
+        messageTableView.register(UINib(nibName: "SentCell",
+                                        bundle: nil),
                                   forCellReuseIdentifier: "sentMessageCell")
         
         configureTableView()
@@ -74,9 +75,18 @@ class ChatViewController: UIViewController,
         messageTableView.separatorStyle = .none
         
         // set up the cusom notification functions
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(textChanged), name: .UITextFieldTextDidChange, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: .UIKeyboardWillShow,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: .UIKeyboardWillHide,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(textChanged),
+                                               name: .UITextFieldTextDidChange,
+                                               object: nil)
         sendButton.layer.cornerRadius = sendButton.frame.height / 2
         setSendButton(isEnabled: false)
         
@@ -90,30 +100,13 @@ class ChatViewController: UIViewController,
     }
     
 
-    func createCell(for tableView: UITableView, at indexPath: IndexPath, withIdentifier reuseIdentifier: String) -> SendRecieveCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier,
-                                                 for: indexPath) as! SendRecieveCell
-        
-        cell = reuseIdentifier == "sentMessageCell" ? cell as! SentMessageCell : cell as! CustomMessageCell
-        
-        cell.msgBody!.text = messageArray[indexPath.row].messageBody
-        cell.msgImageView!.image = UIImage(named: "no-photo")
-        cell.msgImageView!.layer.borderWidth = 1
-        cell.msgImageView!.layer.masksToBounds = false
-        cell.msgImageView!.layer.borderColor = UIColor.black.cgColor
-        cell.msgImageView!.layer.cornerRadius = cell.msgImageView!.frame.height/2
-        cell.msgImageView!.clipsToBounds = true
-        
-        cell.msgBackground!.backgroundColor = cell.color
-        cell.isUserInteractionEnabled = false
-        return cell
-    }
+
     //////////////////////////////////////
     //MARK: - TableView DataSource Methods
 
     @objc
     func tableView(_ tableView: UITableView,
-                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let messageSender = messageArray[indexPath.row].sender
         var reuseIdentifier: String
         if messageSender == sender {
@@ -141,6 +134,32 @@ class ChatViewController: UIViewController,
         messageTableView.estimatedRowHeight = 120
     }
     
+    // Helper method for cellForRowAt method.
+    // Creates a new cell with the given reuseIdentifier
+    func createCell(for tableView: UITableView,
+                    at indexPath: IndexPath,
+                    withIdentifier reuseIdentifier: String) -> SendRecieveCell {
+        
+        var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier,
+                                                 for: indexPath) as! SendRecieveCell
+        
+        cell = reuseIdentifier == "sentMessageCell" ?
+                                  cell as! SentMessageCell :
+                                  cell as! CustomMessageCell
+        
+        cell.msgBody!.text = messageArray[indexPath.row].messageBody
+        cell.msgImageView!.image = UIImage(named: "no-photo")
+        cell.msgImageView!.layer.borderWidth = 1
+        cell.msgImageView!.layer.masksToBounds = false
+        cell.msgImageView!.layer.borderColor = UIColor.black.cgColor
+        cell.msgImageView!.layer.cornerRadius = cell.msgImageView!.frame.height/2
+        cell.msgImageView!.clipsToBounds = true
+        
+        cell.msgBackground!.backgroundColor = cell.color
+        cell.isUserInteractionEnabled = false
+        return cell
+    }
+    
     
     // MARK: - TextField / Keyboard Methods
     @objc
@@ -165,29 +184,37 @@ class ChatViewController: UIViewController,
         sendButton.backgroundColor = bgColor
     }
     
-    
+    // Method to animate the text field upwards when the keyboard appears
     @objc func keyboardWillShow(notification: NSNotification) {
         let duration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as! Double
         let curve = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as! Int
         
-        UIView.animate(withDuration: duration, delay: 0.0, options: .init(rawValue: UInt(curve)), animations: { self.heightConstraint.constant = 308
-            self.view.layoutIfNeeded()
-            if !self.messageArray.isEmpty {
-                self.viewWillAppear(true)
-            }
-        }, completion: nil)
+        UIView.animate(withDuration: duration,
+                       delay: 0.0,
+                       options: .init(rawValue: UInt(curve)),
+                       animations: { self.heightConstraint.constant = 308
+                            self.view.layoutIfNeeded()
+                            if !self.messageArray.isEmpty {
+                                self.viewWillAppear(true)
+                            }
+                       },
+                       completion: nil)
         
     }
     
-    
+    // Method to move the textfield down when the keyboard disappears
     @objc func keyboardWillHide(notification: NSNotification) {
         let duration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as! Double
         let curve = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as! Int
         
-        UIView.animate(withDuration: duration, delay: 0.0, options: .init(rawValue: UInt(curve)), animations: {
-            self.heightConstraint.constant = 50
-            self.view.layoutIfNeeded()
-        }, completion: nil)
+        UIView.animate(withDuration: duration,
+                       delay: 0.0,
+                       options: .init(rawValue: UInt(curve)),
+                       animations: {
+                         self.heightConstraint.constant = 50
+                         self.view.layoutIfNeeded()
+                       },
+                       completion: nil)
     }
     
     
@@ -212,14 +239,14 @@ class ChatViewController: UIViewController,
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateString = dateFormatter.string(from: date)
         
-        let messageDB2 = Database.database().reference().child("Messages").child(recipient).child(self.sender)
+        let messageDB = Database.database().reference().child("Messages").child(recipient).child(self.sender)
         let messageDictionary = ["Sender"      : self.sender,
                                  "Reciever"    : recipient,
                                  "MessageBody" : messageTextfield.text!,
                                  "Time"        : dateString]
         
         
-        messageDB2.childByAutoId().setValue(messageDictionary) {
+        messageDB.childByAutoId().setValue(messageDictionary) {
             (error2, reference2) in
             if error2 == nil {
                 self.messageTextfield.text = ""
