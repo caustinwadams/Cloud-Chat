@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="sentCellNoImage" rowHeight="51" id="hNX-pa-edF" customClass="SentCellNoImage" customModule="Cloud_Chat" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hNX-pa-edF" id="29C-He-X6L">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="49.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ISP-03-rXq">
+                        <rect key="frame" x="90" y="5" width="210" height="41"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cf7-bR-VXN">
+                                <rect key="frame" x="9" y="0.0" width="203" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.45543920989999997" green="0.47536808250000001" blue="0.4877150059" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVO-gd-OcI">
+                                <rect key="frame" x="8" y="10" width="194" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="0.99997437" blue="0.99999129769999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.1819814891" green="0.69426733259999995" blue="0.53024792669999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="cf7-bR-VXN" firstAttribute="top" secondItem="ISP-03-rXq" secondAttribute="top" id="5dG-8i-UQj"/>
+                            <constraint firstItem="BVO-gd-OcI" firstAttribute="leading" secondItem="ISP-03-rXq" secondAttribute="leading" constant="8" id="IIr-bG-knO"/>
+                            <constraint firstAttribute="trailing" secondItem="cf7-bR-VXN" secondAttribute="trailing" constant="-2" id="RYe-If-FOU"/>
+                            <constraint firstAttribute="trailing" secondItem="BVO-gd-OcI" secondAttribute="trailing" constant="8" id="UfV-q8-R1A"/>
+                            <constraint firstItem="BVO-gd-OcI" firstAttribute="top" secondItem="cf7-bR-VXN" secondAttribute="bottom" constant="10" id="jWU-aW-O4Y"/>
+                            <constraint firstAttribute="bottom" secondItem="BVO-gd-OcI" secondAttribute="bottom" constant="10" id="kic-LM-uKC"/>
+                            <constraint firstItem="cf7-bR-VXN" firstAttribute="leading" secondItem="ISP-03-rXq" secondAttribute="leading" constant="9" id="qF4-ND-HuR"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="20"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ISP-03-rXq" firstAttribute="top" secondItem="29C-He-X6L" secondAttribute="top" constant="5" id="Nzo-qy-Lvi"/>
+                    <constraint firstItem="ISP-03-rXq" firstAttribute="leading" secondItem="29C-He-X6L" secondAttribute="leading" constant="90" id="OVx-nc-MWw"/>
+                    <constraint firstItem="ISP-03-rXq" firstAttribute="trailing" secondItem="29C-He-X6L" secondAttribute="trailing" constant="-20" id="cdD-aU-Ltr"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="messageBackground" destination="ISP-03-rXq" id="cRj-yq-Gin"/>
+                <outlet property="messageBody" destination="BVO-gd-OcI" id="dxS-2D-bbT"/>
+            </connections>
+            <point key="canvasLocation" x="432" y="367"/>
+        </tableViewCell>
+    </objects>
+</document>

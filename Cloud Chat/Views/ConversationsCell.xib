@@ -39,8 +39,8 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:15 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eN9-J6-9kU">
-                        <rect key="frame" x="223" y="12" width="60" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:15 PM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eN9-J6-9kU">
+                        <rect key="frame" x="220" y="12" width="63" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -70,7 +70,7 @@
                     <constraint firstAttribute="trailingMargin" secondItem="mPp-px-Sb0" secondAttribute="trailing" constant="65" id="C55-lx-OYQ"/>
                     <constraint firstItem="mPp-px-Sb0" firstAttribute="leading" secondItem="eNz-0E-Nzz" secondAttribute="trailing" constant="10" id="E6G-Ah-gw8"/>
                     <constraint firstItem="mPp-px-Sb0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="IXl-r1-Gio"/>
-                    <constraint firstItem="eN9-J6-9kU" firstAttribute="leading" secondItem="mPp-px-Sb0" secondAttribute="trailing" constant="10" id="KXe-TM-ST1"/>
+                    <constraint firstItem="eN9-J6-9kU" firstAttribute="leading" secondItem="eNz-0E-Nzz" secondAttribute="trailing" constant="160" id="KXe-TM-ST1"/>
                     <constraint firstItem="rCJ-7e-GeP" firstAttribute="top" secondItem="eN9-J6-9kU" secondAttribute="bottom" constant="13" id="OoZ-bv-bsz"/>
                     <constraint firstAttribute="trailingMargin" secondItem="eN9-J6-9kU" secondAttribute="trailing" constant="-5" id="PCL-wB-CXH"/>
                     <constraint firstItem="2JW-nJ-U0a" firstAttribute="leading" secondItem="eNz-0E-Nzz" secondAttribute="trailing" constant="10" id="XU6-D4-pC9"/>

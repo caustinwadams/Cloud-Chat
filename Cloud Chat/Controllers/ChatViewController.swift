@@ -60,6 +60,9 @@ class ChatViewController: UIViewController,
         messageTableView.register(UINib(nibName: "SentCell",
                                         bundle: nil),
                                   forCellReuseIdentifier: "sentMessageCell")
+        messageTableView.register(UINib(nibName: "SentCellNoImage",
+                                        bundle: nil),
+                                  forCellReuseIdentifier: "sentCellNoImage")
         
         configureTableView()
         
@@ -107,10 +110,16 @@ class ChatViewController: UIViewController,
     @objc
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let messageSender = messageArray[indexPath.row].sender
+        let row = indexPath.row
+        let messageSender = messageArray[row].sender
         var reuseIdentifier: String
         if messageSender == sender {
-            reuseIdentifier = "sentMessageCell"
+            if (row == messageArray.count - 1 ||
+               messageArray[row + 1].sender! != sender) {
+                reuseIdentifier = "sentMessageCell"
+            } else {
+                reuseIdentifier = "sentCellNoImage"
+            }
         } else {
             reuseIdentifier = "recievedMessageCell"
         }
@@ -143,18 +152,34 @@ class ChatViewController: UIViewController,
         var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier,
                                                  for: indexPath) as! SendRecieveCell
         
-        cell = reuseIdentifier == "sentMessageCell" ?
-                                  cell as! SentMessageCell :
-                                  cell as! CustomMessageCell
+        var hasImage = false
+
+        switch (reuseIdentifier) {
+        case "sentMessageCell":
+            hasImage = true
+            cell = cell as! SentMessageCell
+            break
+        case "recievedMessageCell":
+            hasImage = true
+            cell = cell as! CustomMessageCell
+            break
+        case "sentCellNoImage":
+            cell = cell as! SentCellNoImage
+            break
+        default:
+            break
+        }
+        
+        if hasImage {
+            cell.msgImageView!.image = UIImage(named: "no-photo")
+            cell.msgImageView!.layer.borderWidth = 1
+            cell.msgImageView!.layer.masksToBounds = false
+            cell.msgImageView!.layer.borderColor = UIColor.black.cgColor
+            cell.msgImageView!.layer.cornerRadius = cell.msgImageView!.frame.height/2
+            cell.msgImageView!.clipsToBounds = true
+        }
         
         cell.msgBody!.text = messageArray[indexPath.row].messageBody
-        cell.msgImageView!.image = UIImage(named: "no-photo")
-        cell.msgImageView!.layer.borderWidth = 1
-        cell.msgImageView!.layer.masksToBounds = false
-        cell.msgImageView!.layer.borderColor = UIColor.black.cgColor
-        cell.msgImageView!.layer.cornerRadius = cell.msgImageView!.frame.height/2
-        cell.msgImageView!.clipsToBounds = true
-        
         cell.msgBackground!.backgroundColor = cell.color
         cell.isUserInteractionEnabled = false
         return cell
@@ -339,8 +364,9 @@ class ChatViewController: UIViewController,
                                         currentConversation!.user!,
                                         currentConversation!.parentUser!.name!)
         if let additionalPredicate = predicate {
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [userPredicate,
-                                                                                    additionalPredicate])
+            request.predicate =
+                NSCompoundPredicate(andPredicateWithSubpredicates: [userPredicate,
+                                                                    additionalPredicate])
         } else {
             request.predicate = userPredicate
         }
