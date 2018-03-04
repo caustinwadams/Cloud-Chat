@@ -21,10 +21,11 @@
 		432A806B2038E7BA00955623 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A80642038E7BA00955623 /* WelcomeViewController.swift */; };
 		432A806C2038E7BA00955623 /* SentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 432A80652038E7BA00955623 /* SentCell.xib */; };
 		432A806D2038E7BA00955623 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A80662038E7BA00955623 /* RegisterViewController.swift */; };
-		432A806E2038E7BA00955623 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A80672038E7BA00955623 /* Message.swift */; };
 		432A80702038E90200955623 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 432A806F2038E90100955623 /* Assets.xcassets */; };
 		434AC2EF2038DDFD006CFB9F /* Cloud_Chat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 434AC2ED2038DDFD006CFB9F /* Cloud_Chat.xcdatamodeld */; };
 		434AC2F42038DDFD006CFB9F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 434AC2F22038DDFD006CFB9F /* LaunchScreen.storyboard */; };
+		43615505203F824700071089 /* ConversationsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43615503203F824700071089 /* ConversationsCell.swift */; };
+		43615506203F824700071089 /* ConversationsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43615504203F824700071089 /* ConversationsCell.xib */; };
 		E63B61EE05D3E3BF42DD2E42 /* Pods_Cloud_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FBC74FAE3CECA7C66DA7D0A /* Pods_Cloud_Chat.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,12 +44,13 @@
 		432A80642038E7BA00955623 /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		432A80652038E7BA00955623 /* SentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SentCell.xib; sourceTree = "<group>"; };
 		432A80662038E7BA00955623 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
-		432A80672038E7BA00955623 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		432A806F2038E90100955623 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		434AC2E32038DDFD006CFB9F /* Cloud Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cloud Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		434AC2EE2038DDFD006CFB9F /* Cloud_Chat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Cloud_Chat.xcdatamodel; sourceTree = "<group>"; };
 		434AC2F32038DDFD006CFB9F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		434AC2F52038DDFD006CFB9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		43615503203F824700071089 /* ConversationsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsCell.swift; sourceTree = "<group>"; };
+		43615504203F824700071089 /* ConversationsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationsCell.xib; sourceTree = "<group>"; };
 		7FBC74FAE3CECA7C66DA7D0A /* Pods_Cloud_Chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cloud_Chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C196FD9E47FE20075C0ABFDD /* Pods-Cloud Chat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cloud Chat.release.xcconfig"; path = "Pods/Target Support Files/Pods-Cloud Chat/Pods-Cloud Chat.release.xcconfig"; sourceTree = "<group>"; };
 		E65A1903214DD529A20938AF /* Pods-Cloud Chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cloud Chat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Cloud Chat/Pods-Cloud Chat.debug.xcconfig"; sourceTree = "<group>"; };
@@ -78,10 +80,10 @@
 			isa = PBXGroup;
 			children = (
 				432A80572038E77900955623 /* CustomMessageCell.swift */,
-				432A80672038E7BA00955623 /* Message.swift */,
 				432A80612038E7B900955623 /* SendRecieveCell.swift */,
 				432A80632038E7BA00955623 /* SentMessageCell.swift */,
 				434AC2ED2038DDFD006CFB9F /* Cloud_Chat.xcdatamodeld */,
+				43615503203F824700071089 /* ConversationsCell.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -93,6 +95,7 @@
 				434AC2F22038DDFD006CFB9F /* LaunchScreen.storyboard */,
 				432A80622038E7B900955623 /* MessageCell.xib */,
 				432A80652038E7BA00955623 /* SentCell.xib */,
+				43615504203F824700071089 /* ConversationsCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 				432A80692038E7BA00955623 /* MessageCell.xib in Resources */,
 				432A806C2038E7BA00955623 /* SentCell.xib in Resources */,
 				432A80702038E90200955623 /* Assets.xcassets in Resources */,
+				43615506203F824700071089 /* ConversationsCell.xib in Resources */,
 				434AC2F42038DDFD006CFB9F /* LaunchScreen.storyboard in Resources */,
 				432A80522038E53600955623 /* GoogleService-Info.plist in Resources */,
 				432A80542038E70E00955623 /* Main.storyboard in Resources */,
@@ -301,10 +305,10 @@
 				432A806A2038E7BA00955623 /* SentMessageCell.swift in Sources */,
 				432A805A2038E77900955623 /* ChatViewController.swift in Sources */,
 				432A805D2038E77900955623 /* AddConvoViewController.swift in Sources */,
+				43615505203F824700071089 /* ConversationsCell.swift in Sources */,
 				432A806B2038E7BA00955623 /* WelcomeViewController.swift in Sources */,
 				432A806D2038E7BA00955623 /* RegisterViewController.swift in Sources */,
 				432A80682038E7BA00955623 /* SendRecieveCell.swift in Sources */,
-				432A806E2038E7BA00955623 /* Message.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
