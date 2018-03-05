@@ -11,24 +11,24 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="recievedMessageCell" rowHeight="82" id="9hv-3d-eEy" customClass="CustomMessageCell" customModule="Cloud_Chat" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="81"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="recievedMessageCell" rowHeight="81" id="9hv-3d-eEy" customClass="CustomMessageCell" customModule="Cloud_Chat" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9hv-3d-eEy" id="2SS-CF-kBl">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="80.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="79.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yxz-95-vHl">
-                        <rect key="frame" x="20" y="5" width="210" height="50.5"/>
+                        <rect key="frame" x="20" y="2.5" width="210" height="52"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="khv-tc-S9N">
-                                <rect key="frame" x="9" y="0.0" width="203" height="9.5"/>
+                                <rect key="frame" x="9" y="0.0" width="203" height="11"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" red="0.45543920993804932" green="0.47536808252334595" blue="0.48771500587463379" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ael-H3-UuV">
-                                <rect key="frame" x="8" y="19.5" width="194" height="21"/>
+                                <rect key="frame" x="8" y="21" width="194" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="0.99997437000274658" blue="0.99999129772186279" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -52,7 +52,7 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KKK-He-xNm">
-                        <rect key="frame" x="5" y="50.5" width="25" height="25"/>
+                        <rect key="frame" x="5" y="49.5" width="25" height="25"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="25" id="V9u-bj-2Ih"/>
                             <constraint firstAttribute="width" constant="25" id="cfG-zK-5xi"/>
@@ -63,7 +63,7 @@
                     <constraint firstAttribute="bottom" secondItem="Yxz-95-vHl" secondAttribute="bottom" constant="25" id="7rL-k3-Njc"/>
                     <constraint firstItem="KKK-He-xNm" firstAttribute="leading" secondItem="2SS-CF-kBl" secondAttribute="leading" constant="5" id="CER-Dt-k53"/>
                     <constraint firstAttribute="trailing" secondItem="Yxz-95-vHl" secondAttribute="trailing" constant="90" id="F1b-eD-GtD"/>
-                    <constraint firstItem="Yxz-95-vHl" firstAttribute="top" secondItem="2SS-CF-kBl" secondAttribute="top" constant="5" id="UHt-vT-ebt"/>
+                    <constraint firstItem="Yxz-95-vHl" firstAttribute="top" secondItem="2SS-CF-kBl" secondAttribute="top" constant="2.5" id="UHt-vT-ebt"/>
                     <constraint firstItem="Yxz-95-vHl" firstAttribute="leading" secondItem="KKK-He-xNm" secondAttribute="trailing" constant="-10" id="lgh-rZ-Qdu"/>
                     <constraint firstItem="KKK-He-xNm" firstAttribute="bottom" secondItem="2SS-CF-kBl" secondAttribute="bottom" constant="-5" id="vea-Ie-2uS"/>
                 </constraints>
@@ -74,7 +74,7 @@
                 <outlet property="messageBody" destination="Ael-H3-UuV" id="kXz-0y-fp3"/>
                 <outlet property="senderUsername" destination="khv-tc-S9N" id="9FT-43-C9p"/>
             </connections>
-            <point key="canvasLocation" x="439" y="381.5"/>
+            <point key="canvasLocation" x="439" y="381"/>
         </tableViewCell>
     </objects>
 </document>

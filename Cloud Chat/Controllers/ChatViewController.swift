@@ -63,6 +63,9 @@ class ChatViewController: UIViewController,
         messageTableView.register(UINib(nibName: "SentCellNoImage",
                                         bundle: nil),
                                   forCellReuseIdentifier: "sentCellNoImage")
+        messageTableView.register(UINib(nibName: "RecievedCellNoImage",
+                                        bundle: nil),
+                                  forCellReuseIdentifier: "recievedCellNoImage")
         
         configureTableView()
         
@@ -121,7 +124,12 @@ class ChatViewController: UIViewController,
                 reuseIdentifier = "sentCellNoImage"
             }
         } else {
-            reuseIdentifier = "recievedMessageCell"
+            if (row == messageArray.count - 1 ||
+                messageArray[row + 1].sender! == sender) {
+                reuseIdentifier = "recievedMessageCell"
+            } else {
+                reuseIdentifier = "recievedCellNoImage"
+            }
         }
         return createCell(for: tableView, at: indexPath, withIdentifier: reuseIdentifier)
     }
@@ -165,6 +173,9 @@ class ChatViewController: UIViewController,
             break
         case "sentCellNoImage":
             cell = cell as! SentCellNoImage
+            break
+        case "recievedCellNoImage":
+            cell = cell as! RecievedCellNoImage
             break
         default:
             break

@@ -28,6 +28,8 @@
 		43615506203F824700071089 /* ConversationsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43615504203F824700071089 /* ConversationsCell.xib */; };
 		4388549C204CAF6500EC0491 /* SentCellNoImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388549A204CAF6500EC0491 /* SentCellNoImage.swift */; };
 		4388549D204CAF6500EC0491 /* SentCellNoImage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4388549B204CAF6500EC0491 /* SentCellNoImage.xib */; };
+		438854A0204CBF9400EC0491 /* RecievedCellNoImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388549E204CBF9400EC0491 /* RecievedCellNoImage.swift */; };
+		438854A1204CBF9400EC0491 /* RecievedCellNoImage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4388549F204CBF9400EC0491 /* RecievedCellNoImage.xib */; };
 		E63B61EE05D3E3BF42DD2E42 /* Pods_Cloud_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FBC74FAE3CECA7C66DA7D0A /* Pods_Cloud_Chat.framework */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +57,8 @@
 		43615504203F824700071089 /* ConversationsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationsCell.xib; sourceTree = "<group>"; };
 		4388549A204CAF6500EC0491 /* SentCellNoImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentCellNoImage.swift; sourceTree = "<group>"; };
 		4388549B204CAF6500EC0491 /* SentCellNoImage.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SentCellNoImage.xib; sourceTree = "<group>"; };
+		4388549E204CBF9400EC0491 /* RecievedCellNoImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecievedCellNoImage.swift; sourceTree = "<group>"; };
+		4388549F204CBF9400EC0491 /* RecievedCellNoImage.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecievedCellNoImage.xib; sourceTree = "<group>"; };
 		7FBC74FAE3CECA7C66DA7D0A /* Pods_Cloud_Chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cloud_Chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C196FD9E47FE20075C0ABFDD /* Pods-Cloud Chat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cloud Chat.release.xcconfig"; path = "Pods/Target Support Files/Pods-Cloud Chat/Pods-Cloud Chat.release.xcconfig"; sourceTree = "<group>"; };
 		E65A1903214DD529A20938AF /* Pods-Cloud Chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cloud Chat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Cloud Chat/Pods-Cloud Chat.debug.xcconfig"; sourceTree = "<group>"; };
@@ -89,6 +93,7 @@
 				434AC2ED2038DDFD006CFB9F /* Cloud_Chat.xcdatamodeld */,
 				43615503203F824700071089 /* ConversationsCell.swift */,
 				4388549A204CAF6500EC0491 /* SentCellNoImage.swift */,
+				4388549E204CBF9400EC0491 /* RecievedCellNoImage.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -102,6 +107,7 @@
 				432A80652038E7BA00955623 /* SentCell.xib */,
 				43615504203F824700071089 /* ConversationsCell.xib */,
 				4388549B204CAF6500EC0491 /* SentCellNoImage.xib */,
+				4388549F204CBF9400EC0491 /* RecievedCellNoImage.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -228,6 +234,7 @@
 				43615506203F824700071089 /* ConversationsCell.xib in Resources */,
 				434AC2F42038DDFD006CFB9F /* LaunchScreen.storyboard in Resources */,
 				432A80522038E53600955623 /* GoogleService-Info.plist in Resources */,
+				438854A1204CBF9400EC0491 /* RecievedCellNoImage.xib in Resources */,
 				4388549D204CAF6500EC0491 /* SentCellNoImage.xib in Resources */,
 				432A80542038E70E00955623 /* Main.storyboard in Resources */,
 			);
@@ -315,6 +322,7 @@
 				432A805D2038E77900955623 /* AddConvoViewController.swift in Sources */,
 				43615505203F824700071089 /* ConversationsCell.swift in Sources */,
 				432A806B2038E7BA00955623 /* WelcomeViewController.swift in Sources */,
+				438854A0204CBF9400EC0491 /* RecievedCellNoImage.swift in Sources */,
 				432A806D2038E7BA00955623 /* RegisterViewController.swift in Sources */,
 				432A80682038E7BA00955623 /* SendRecieveCell.swift in Sources */,
 			);
