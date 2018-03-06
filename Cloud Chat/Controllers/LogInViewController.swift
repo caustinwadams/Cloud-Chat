@@ -18,6 +18,7 @@ class LogInViewController: UIViewController {
     @IBOutlet var userTextField: UITextField!
     @IBOutlet var passwordTextfield: UITextField!
     
+    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var loginButton: UIButton!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistantContainer.viewContext
     var username : String = ""
@@ -28,6 +29,7 @@ class LogInViewController: UIViewController {
         super.viewDidLoad()
         loadUsers()
         loginButton.layer.cornerRadius = loginButton.frame.height / 2
+        errorLabel.text = ""
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,7 +51,7 @@ class LogInViewController: UIViewController {
    
     //MARK: - Navigation
     @IBAction func logInPressed(_ sender: AnyObject) {
-
+        errorLabel.text = ""
         SVProgressHUD.show()
         
         username = userTextField.text!
@@ -73,7 +75,17 @@ class LogInViewController: UIViewController {
                 
                 self.performSegue(withIdentifier: "goToConversations", sender: senderUser!)
             } else {
-                print("Login failed...")
+                let noUserError = "There is no user record corresponding to this identifier. The user may have been deleted."
+                let wrongPasswordError = "The password is invalid or the user does not have a password."
+                let realError = error!.localizedDescription
+                if realError == noUserError {
+                    self.errorLabel.text = "NO USER BY THAT NAME"
+                    print("NO USER BY THAT NAME")
+                } else if realError == wrongPasswordError {
+                    print("WRONG PASSWORD")
+                    self.errorLabel.text = "WRONG PASSWORD"
+                }
+                
             }
             
             SVProgressHUD.dismiss()
