@@ -52,43 +52,49 @@ class LogInViewController: UIViewController {
     //MARK: - Navigation
     @IBAction func logInPressed(_ sender: AnyObject) {
         errorLabel.text = ""
-        SVProgressHUD.show()
-        
+
         username = userTextField.text!
-        let userEmail = username + "@email.com"
-        
-        Auth.auth().signIn(withEmail: userEmail,
-                           password: passwordTextfield.text!)
-        {
-            (user, error) in
-            if error == nil {
-                print("Login Successful.")
-                
-                // Try to find user in our list of known users,
-                // if not found, we create a new one and save it to the context
-                var senderUser = self.findUser(withName: self.username)
-                if senderUser == nil {
-                    senderUser = User(context: self.context)
-                    senderUser?.name = self.username.lowercased()
-                    self.saveUsers()
-                }
-                
-                self.performSegue(withIdentifier: "goToConversations", sender: senderUser!)
-            } else {
-                let noUserError = "There is no user record corresponding to this identifier. The user may have been deleted."
-                let wrongPasswordError = "The password is invalid or the user does not have a password."
-                let realError = error!.localizedDescription
-                if realError == noUserError {
-                    self.errorLabel.text = "NO USER BY THAT NAME"
-                    print("NO USER BY THAT NAME")
-                } else if realError == wrongPasswordError {
-                    print("WRONG PASSWORD")
-                    self.errorLabel.text = "WRONG PASSWORD"
-                }
-                
-            }
+        if username == "" {
+            self.errorLabel.text = "MUST ENTER USERNAME"
+        } else if passwordTextfield.text! == "" {
+            self.errorLabel.text = "MUST ENTER PASSWORD"
+        } else {
+            SVProgressHUD.show()
+            let userEmail = username + "@email.com"
             
-            SVProgressHUD.dismiss()
+            Auth.auth().signIn(withEmail: userEmail,
+                               password: passwordTextfield.text!)
+            {
+                (user, error) in
+                if error == nil {
+                    print("Login Successful.")
+                    
+                    // Try to find user in our list of known users,
+                    // if not found, we create a new one and save it to the context
+                    var senderUser = self.findUser(withName: self.username)
+                    if senderUser == nil {
+                        senderUser = User(context: self.context)
+                        senderUser?.name = self.username.lowercased()
+                        self.saveUsers()
+                    }
+                    
+                    self.performSegue(withIdentifier: "goToConversations", sender: senderUser!)
+                } else {
+                    let noUserError = "There is no user record corresponding to this identifier. The user may have been deleted."
+                    let wrongPasswordError = "The password is invalid or the user does not have a password."
+                    let realError = error!.localizedDescription
+                    
+                    
+                    if realError == noUserError {
+                        self.errorLabel.text = "NO USER BY THAT NAME"
+                    } else if realError == wrongPasswordError {
+                        self.errorLabel.text = "WRONG PASSWORD"
+                    }
+                    
+                }
+                
+                SVProgressHUD.dismiss()
+            }
         }
         
         
