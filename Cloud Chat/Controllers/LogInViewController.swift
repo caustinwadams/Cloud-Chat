@@ -87,8 +87,10 @@ class LogInViewController: UIViewController {
                     
                     if realError == noUserError {
                         self.errorLabel.text = "NO USER BY THAT NAME"
+                        self.userTextField.shake()
                     } else if realError == wrongPasswordError {
                         self.errorLabel.text = "WRONG PASSWORD"
+                        self.passwordTextfield.shake()
                     }
                     
                 }
@@ -127,4 +129,20 @@ class LogInViewController: UIViewController {
     }
 
     
-}  
+}
+
+
+// MARK: - Shake animation for username / passowrd errors
+public extension UIView {
+    
+    func shake(count : Float = 4,for duration : TimeInterval = 0.5,withTranslation translation : Float = -5) {
+        
+        let animation : CABasicAnimation = CABasicAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.repeatCount = count
+        animation.duration = duration/TimeInterval(animation.repeatCount)
+        animation.autoreverses = true
+        animation.byValue = translation
+        layer.add(animation, forKey: "shake")
+    }
+}
