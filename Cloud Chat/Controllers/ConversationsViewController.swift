@@ -91,6 +91,27 @@ class ConversationsViewController: UITableViewController {
     }
     
     
+    
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "delete") { (action, indexPath) in
+            // delete item at indexPath
+            let convo = self.conversations[indexPath.row]
+            self.convosDictionary[convo.user!] = nil
+            self.nicknamesDictionary[convo.user!] = nil
+            self.numNewMessages[convo.user!] = nil
+            self.lastMessageDictionary[convo.user!] = nil
+            self.conversations.remove(at: indexPath.row)
+            self.saveConversations()
+            self.tableView.reloadData()
+//            print("convos: \(self.conversations.count)")
+//            print(indexPath.row)
+            
+        }
+        return [delete]
+    }
+    
+    
 
     
 
