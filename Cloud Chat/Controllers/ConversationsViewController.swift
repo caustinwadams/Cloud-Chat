@@ -106,7 +106,7 @@ class ConversationsViewController: UITableViewController {
             self.tableView.reloadData()
 //            print("convos: \(self.conversations.count)")
 //            print(indexPath.row)
-            
+            self.deleteMessages(user: convo.user!)
         }
         return [delete]
     }
@@ -230,10 +230,6 @@ class ConversationsViewController: UITableViewController {
             tableCell.numMessagesLabel.text! = "\(messageCount)"
             notiView.isHidden = false
             notiView.backgroundColor = UIColor.flatSkyBlue()
-//            UIColor.init(red: 121.0 / 255.0,
-//                         green: 210.0 / 255.0,
-//                         blue: 245.0 / 255.0,
-//                         alpha: 1)
             notiView.layer.cornerRadius = notiView.frame.height / 2
         } else {
             tableCell.convoNotificationView.isHidden = true
@@ -253,7 +249,7 @@ class ConversationsViewController: UITableViewController {
     
     
     
-    // MARK: - Saving and Loading from CoreData
+    // MARK: - Saving, Loading, and Deleting from CoreData
     
     func saveConversations() {
         do {
@@ -289,21 +285,48 @@ class ConversationsViewController: UITableViewController {
         tableView.reloadData()
     }
     
-
-//    func loadConversations() {
-//        conversations = parentUser.conversations
-//    }
+    // Functions to delete messages and conversations
+    func deleteMessages(with request : NSFetchRequest<Message> = Message.fetchRequest(),
+                             user    : String) {
+        let userPredicate = NSPredicate(
+            format: "parentConversation.parentUser.name MATCHES %@", loggedInUser!.name!
+        )
+        let additionalPredicate = NSPredicate(
+            format: "parentConversation.user MATCHES %@", user
+        )
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [userPredicate,
+                                                                                additionalPredicate])
+        
+        if let result = try? context.fetch(request) {
+            for object in result {
+                context.delete(object)
+            }
+        }
+        
+        deleteConversation(for: user)
+    }
     
     
+    func deleteConversation(with request : NSFetchRequest<Conversation> = Conversation.fetchRequest(),
+                            for  user    : String) {
+        let userPredicate = NSPredicate(
+            format: "parentUser.name MATCHES %@", loggedInUser!.name!
+        )
+        let additionalPredicate = NSPredicate(
+            format: "user MATCHES %@", user
+        )
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [userPredicate,
+                                                                                additionalPredicate])
+        
+        if let result = try? context.fetch(request) {
+            for object in result {
+                context.delete(object)
+            }
+        }
+    }
     
-
     
-
-    
-    
-    
-    
-//    // MARK: - Core Data Functions
+    // MARK: - Core Data Functions
     // TODO: Set the newest message for each conversation to a dictionary variable.
     // Then we can display time and text of last message in each convo cell
     func retrieveMessages() {
