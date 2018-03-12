@@ -326,9 +326,8 @@ class ConversationsViewController: UITableViewController {
     }
     
     
+    
     // MARK: - Core Data Functions
-    // TODO: Set the newest message for each conversation to a dictionary variable.
-    // Then we can display time and text of last message in each convo cell
     func retrieveMessages() {
 
         let messageDB = Database.database().reference().child("Messages").child(loggedInUser.name!)
@@ -378,7 +377,6 @@ class ConversationsViewController: UITableViewController {
 extension ConversationsViewController: LastMessageDelegate {
     func setLastMessage(for user: String, message: Message) {
         convosDictionary[user]!.lastMessage = message
-        
         saveConversations()
         tableView.reloadData()
     }
