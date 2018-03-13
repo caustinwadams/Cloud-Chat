@@ -81,6 +81,22 @@ class ChatViewController: UIViewController,
         messageTableView.separatorStyle = .none
         
         // set up the cusom notification functions
+        setupNotifications()
+        sendButton.layer.cornerRadius = sendButton.frame.height / 2
+        setSendButton(isEnabled: false)
+        
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if !messageArray.isEmpty {
+            let indexPath = IndexPath(row: messageArray.count - 1, section: 0)
+            messageTableView.scrollToRow(at: indexPath, at: .middle, animated: false)
+        }
+    }
+    
+    // MARK: - Helper Function to Setup Notification Services
+    func setupNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow),
                                                name: .UIKeyboardWillShow,
@@ -93,19 +109,8 @@ class ChatViewController: UIViewController,
                                                selector: #selector(textChanged),
                                                name: .UITextFieldTextDidChange,
                                                object: nil)
-        sendButton.layer.cornerRadius = sendButton.frame.height / 2
-        setSendButton(isEnabled: false)
-        
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        if !messageArray.isEmpty {
-            let indexPath = IndexPath(row: messageArray.count - 1, section: 0)
-            messageTableView.scrollToRow(at: indexPath, at: .middle, animated: false)
-        }
-    }
-    
-
 
     //////////////////////////////////////
     //MARK: - TableView DataSource Methods
